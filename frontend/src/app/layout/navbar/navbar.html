@@ -3,10 +3,15 @@
     <img ngSrc="ball.png" alt="Euro Typer Logo" width="30" height="30" />
     <span>Euro Typer 2026</span>
     <span class="example-spacer"></span>
-    <a matButton routerLink="/">Home</a>
-    <a matButton routerLink="/rounds">Rounds</a>
-    <button matIconButton aria-label="Logout button">
-      <mat-icon>logout</mat-icon>
-    </button>
+    @if(isLoggedIn()) {
+      <a matButton routerLink="/">Home</a>
+      <a matButton routerLink="/rounds">Rounds</a>
+      <button matIconButton aria-label="Logout button" (click)="onLogout()">
+        <mat-icon>logout</mat-icon>
+      </button>
+    } @else {
+      <a matButton routerLink="/login">Login</a>
+    }
+
   </app-container>
 </mat-toolbar>
