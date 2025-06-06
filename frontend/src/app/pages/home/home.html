@@ -1,1 +1,9 @@
-<button matButton="elevated">Basic</button>
+@if (showAlert()) {
+  <app-alert
+    [showIcon]="true"
+    type="warning"
+  >
+    You have not yet selected a winner or top scorer!
+    <a routerLink='/profile'>Select now here</a>
+  </app-alert>
+}

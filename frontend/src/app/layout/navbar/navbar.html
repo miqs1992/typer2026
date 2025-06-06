@@ -4,7 +4,9 @@
     <span>Euro Typer 2026</span>
     <span class="example-spacer"></span>
     @if(isLoggedIn()) {
-      <a matButton routerLink="/">Home</a>
+      <a matIconButton routerLink="/">
+        <mat-icon>home</mat-icon>
+      </a>
       <a matButton routerLink="/ranking">Ranking</a>
       <a matButton routerLink="/rounds">Rounds</a>
       <button matIconButton aria-label="Logout button" (click)="onLogout()">
@@ -13,6 +15,5 @@
     } @else {
       <a matButton routerLink="/login">Login</a>
     }
-
   </app-container>
 </mat-toolbar>

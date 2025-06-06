@@ -1,0 +1,25 @@
+<div
+  class="alert-container"
+  [ngClass]="['alert-' + type()]">
+
+  @if (showIcon()) {
+    <div class="alert-icon">
+      <mat-icon>{{ getIcon() }}</mat-icon>
+    </div>
+  }
+
+  <div class="alert-content">
+    <div class="alert-message">
+      <ng-content />
+    </div>
+    @if (description()) {
+      <div class="alert-description">{{ description() }}</div>
+    }
+  </div>
+
+  @if (closable()) {
+    <button mat-icon-button class="alert-close-button" (click)="onClose($event)" aria-label="Close alert">
+      <mat-icon>close</mat-icon>
+    </button>
+  }
+</div>
