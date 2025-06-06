@@ -22,3 +22,23 @@ app-home-card {
     flex: 1 0 100%;
   }
 }
+
+
+.panels-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-top: 16px;
+
+  > * {
+    flex: 1 0 calc(50% - 16px);
+    min-width: 250px;
+  }
+
+  @media (max-width: 768px) {
+    > * {
+      flex: 1 0 100%;
+    }
+  }
+}
+

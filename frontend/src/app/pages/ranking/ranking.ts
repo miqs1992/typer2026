@@ -1,4 +1,4 @@
-import { Component, DestroyRef, inject, input, OnInit, signal } from '@angular/core';
+import { Component, computed, DestroyRef, inject, input, OnInit, signal } from '@angular/core';
 import { RankingService } from './ranking.service';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import {
@@ -36,12 +36,15 @@ import { ActivatedRoute } from '@angular/router';
 export class Ranking implements OnInit {
   #rankingService = inject(RankingService);
   #activatedRoute = inject(ActivatedRoute);
+  #destroyRef = inject(DestroyRef);
+
   currentUser = signal<Profile | null>(null);
   ranking = this.#rankingService.loadedRanking;
   isFetching = signal(false)
   error = signal<string | null>(null);
-  #destroyRef = inject(DestroyRef);
-  displayedColumns: string[] = ['rank', 'name', 'points', 'exact', 'topScorer', 'winner'];
+
+  isCompact = input(false);
+  displayedColumns = computed(() => ['rank', 'name', 'points', 'exact', ...(this.isCompact() ? [] : ['topScorer', 'winner'])]) ;
 
   ngOnInit() {
     this.isFetching.set(true);

@@ -26,6 +26,10 @@
       icon="access_alarm"
     />
   </div>
+  <div class="panels-row">
+    <app-top-scorers />
+    <app-ranking [isCompact]="true"/>
+  </div>
 } @else {
   <mat-spinner></mat-spinner>
 }

@@ -5,6 +5,8 @@ import { Alert } from '../../shared/alert/alert';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { Card } from './card/card';
 import { DatePipe } from '@angular/common';
+import { TopScorers } from './top-scorers/top-scorers';
+import { Ranking } from '../ranking/ranking';
 
 @Component({
   selector: 'app-home',
@@ -14,6 +16,8 @@ import { DatePipe } from '@angular/common';
     MatProgressSpinner,
     Card,
     DatePipe,
+    TopScorers,
+    Ranking,
   ],
   templateUrl: './home.html',
   styleUrl: './home.scss'

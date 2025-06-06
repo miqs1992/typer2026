@@ -1,8 +1,12 @@
 @if (isFetching()) {
   <mat-spinner></mat-spinner>
 } @else {
-  <h1>Ranking</h1>
-  <table mat-table [dataSource]="ranking()" class="mat-elevation-z8">
+  @if(isCompact()) {
+    <h3>Ranking</h3>
+  } @else {
+    <h1>Ranking</h1>
+  }
+  <table mat-table [dataSource]="ranking().slice(0, isCompact() ? 5 : undefined)" class="mat-elevation-z8">
     <ng-container matColumnDef="rank">
       <th mat-header-cell *matHeaderCellDef> Rank </th>
       <td mat-cell *matCellDef="let element; let i = index"> {{i + 1}}. </td>
@@ -47,8 +51,8 @@
       </td>
     </ng-container>
 
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;" [class.current]="row.id === currentUser()?.id"></tr>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns()"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns();" [class.current]="row.id === currentUser()?.id"></tr>
   </table>
 
 }
