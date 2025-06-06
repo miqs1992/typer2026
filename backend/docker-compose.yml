@@ -1,0 +1,26 @@
+services:
+  postgres:
+    container_name: postgres-typer-db
+    image: postgres:17-alpine
+    ports:
+      - $DB_PORT:5432
+    environment:
+      - POSTGRES_USER=$DB_USER
+      - POSTGRES_PASSWORD=$DB_PASSWORD
+      - POSTGRES_DB=$DB_NAME
+    networks:
+      - data
+
+  adminer:
+    container_name: adminer-typer
+    image: adminer
+    ports:
+      - $ADMINER_PORT:8080
+    depends_on:
+      - postgres
+    networks:
+      - data
+
+networks:
+  data:
+
