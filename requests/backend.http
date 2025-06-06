@@ -8,3 +8,22 @@ Content-Type: application/json
   "password": "test123!",
   "passwordConfirmation": "test123!"
 }
+
+###
+POST http://localhost:3000/auth/login
+Content-Type: application/json
+
+{
+  "email": "miqs1992@gmail.com",
+  "password": "test123!"
+}
+
+> {%
+    const token = response.body.access_token
+    client.global.set('backendToken', token)
+%}
+
+###
+GET http://localhost:3000/users/me
+Content-Type: application/json
+Authorization: Bearer {{backendToken}}
