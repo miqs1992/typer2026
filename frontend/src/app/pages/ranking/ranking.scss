@@ -21,3 +21,7 @@
     font-size: var(--mat-table-header-headline-size, var(--mat-sys-title-small-size, 14px));
   }
 }
+
+.mat-mdc-row.current {
+  font-weight: bold;
+}

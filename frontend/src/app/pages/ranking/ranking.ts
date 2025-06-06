@@ -1,4 +1,4 @@
-import { Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
+import { Component, DestroyRef, inject, input, OnInit, signal } from '@angular/core';
 import { RankingService } from './ranking.service';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import {
@@ -11,6 +11,8 @@ import {
   MatTable
 } from '@angular/material/table';
 import { FlagIcon } from '../../shared/flag-icon/flag-icon';
+import { Profile } from '../../auth/auth.model';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-ranking',
@@ -33,6 +35,8 @@ import { FlagIcon } from '../../shared/flag-icon/flag-icon';
 })
 export class Ranking implements OnInit {
   #rankingService = inject(RankingService);
+  #activatedRoute = inject(ActivatedRoute);
+  currentUser = signal<Profile | null>(null);
   ranking = this.#rankingService.loadedRanking;
   isFetching = signal(false)
   error = signal<string | null>(null);
@@ -53,8 +57,17 @@ export class Ranking implements OnInit {
         }
       });
 
+    const userSub = this.#activatedRoute.data.subscribe(data => {
+      if (data['currentUser']) {
+        this.currentUser.set(data['currentUser']);
+      } else {
+        this.currentUser.set(null);
+      }
+    })
+
     this.#destroyRef.onDestroy(() => {
       sub.unsubscribe();
+      userSub.unsubscribe();
     })
   }
 }
