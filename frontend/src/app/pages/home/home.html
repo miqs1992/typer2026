@@ -7,3 +7,25 @@
     <a routerLink='/profile'>Select now here</a>
   </app-alert>
 }
+
+@if (currentUser(); as currentUser) {
+  <div class="card-row">
+    <app-home-card
+      title="Ranking"
+      [content]="currentUser.leagueRank.toString()"
+      icon="leaderboard"
+    />
+    <app-home-card
+      title="Points"
+      [content]="currentUser.points.toFixed(2)"
+      icon="star"
+    />
+    <app-home-card
+      title="Stop bet time"
+      [content]="stopBetTime() ? (stopBetTime() | date:'MMM d, H:mm')! : '-'"
+      icon="access_alarm"
+    />
+  </div>
+} @else {
+  <mat-spinner></mat-spinner>
+}

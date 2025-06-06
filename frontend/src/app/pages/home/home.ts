@@ -1,14 +1,19 @@
 import { Component, computed, DestroyRef, inject, OnInit, signal } from '@angular/core';
-import { MatButton } from '@angular/material/button';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { Profile } from '../../auth/auth.model';
 import { Alert } from '../../shared/alert/alert';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { Card } from './card/card';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-home',
   imports: [
     Alert,
-    RouterLink
+    RouterLink,
+    MatProgressSpinner,
+    Card,
+    DatePipe,
   ],
   templateUrl: './home.html',
   styleUrl: './home.scss'
@@ -16,6 +21,7 @@ import { Alert } from '../../shared/alert/alert';
 export class Home implements OnInit {
   #activatedRoute = inject(ActivatedRoute);
   currentUser = signal<Profile | null>(null);
+  stopBetTime = signal<Date | null>(new Date());
   #destroyRef = inject(DestroyRef);
   showAlert = computed(() => Boolean(this.currentUser()) && (
     this.currentUser()!.topScorer === null || this.currentUser()!.winner === null)
