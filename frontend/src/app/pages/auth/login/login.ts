@@ -1,5 +1,5 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
-import { Auth } from '../../../auth/auth';
+import { AuthService } from '../../../auth/auth.service';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { MatCard, MatCardActions, MatCardContent, MatCardHeader, MatCardTitle } from '@angular/material/card';
@@ -24,7 +24,7 @@ import { MatError, MatFormField, MatInput } from '@angular/material/input';
   styleUrl: './login.scss'
 })
 export class Login implements OnInit {
-  #authService = inject(Auth);
+  #authService = inject(AuthService);
   #router = inject(Router);
   email = signal('');
   password = signal('');

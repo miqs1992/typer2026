@@ -1,11 +1,11 @@
 import { computed, inject, Injectable, signal } from '@angular/core';
-import { StorageService } from '../core/services/storage/storage';
+import { StorageService } from '../core/services/storage/storage.service';
 import { StorageKey } from '../core/services/storage/storage.model';
 
 @Injectable({
   providedIn: 'root'
 })
-export class Auth {
+export class AuthService {
   #token = signal<string>('');
   #storage = inject(StorageService);
   isLoggedIn = computed(() => this.#token().length > 0);

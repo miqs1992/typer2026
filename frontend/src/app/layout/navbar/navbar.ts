@@ -5,7 +5,7 @@ import { MatIcon } from '@angular/material/icon';
 import { Container } from '../container/container';
 import { NgOptimizedImage } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
-import { Auth } from '../../auth/auth';
+import { AuthService } from '../../auth/auth.service';
 
 @Component({
   selector: 'app-navbar',
@@ -14,7 +14,7 @@ import { Auth } from '../../auth/auth';
   styleUrl: './navbar.scss'
 })
 export class Navbar {
-  #authService = inject(Auth);
+  #authService = inject(AuthService);
   #router = inject(Router);
   isLoggedIn = this.#authService.isLoggedIn;
 

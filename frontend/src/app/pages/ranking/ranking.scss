@@ -1,0 +1,23 @@
+:host {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  flex-direction: column;
+}
+
+@media (max-width: 768px) {
+  .mat-column-topScorer,
+  .mat-column-winner {
+    display: none;
+  }
+
+  th[data-column="exact"] {
+    font-size: 0;
+  }
+
+  th[data-column="exact"]::after {
+    content: "Exact";
+    font-size: var(--mat-table-header-headline-size, var(--mat-sys-title-small-size, 14px));
+  }
+}
