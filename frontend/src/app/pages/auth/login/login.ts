@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
 import { AuthService } from '../../../auth/auth.service';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -29,6 +29,7 @@ export class Login implements OnInit {
   email = signal('');
   password = signal('');
   errorMessage = signal('');
+  #destroyRef = inject(DestroyRef);
 
   ngOnInit() {
     this.errorMessage.set('');
@@ -38,16 +39,20 @@ export class Login implements OnInit {
   }
 
   public async login() {
-    try {
-      await this.#authService.login(
-        this.email(),
-        this.password(),
-      )
-      this.navigateTo();
-    } catch (e) {
-      this.errorMessage.set('Wrong Credentials!');
-      console.error('Unable to Login!\n', e);
-    }
+    const sub = this.#authService.login(
+      this.email(),
+      this.password(),
+    ).subscribe({
+      next: () => this.navigateTo(),
+      error: (err) => {
+        this.errorMessage.set('Wrong Credentials!');
+        console.error('Unable to Login!\n', err);
+      },
+    });
+
+    this.#destroyRef.onDestroy(() => {
+      sub.unsubscribe();
+    })
   }
 
   public navigateTo(url?: string) {

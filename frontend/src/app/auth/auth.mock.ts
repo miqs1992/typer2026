@@ -2,7 +2,8 @@ import { Profile } from './auth.model';
 
 export const currentUserMock: Profile = {
   id: '688b8d8f-0e9e-4c29-acbf-9e74be79690b',
-  username: 'Peggi Borton',
+  firstName: 'Peggi',
+  lastName: 'Borton',
   email: 'carmin_mellorc@neural.bos',
   points: 34.5,
   exactBetCount: 3,

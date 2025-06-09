@@ -1,7 +1,8 @@
 export interface Profile {
   id: string;
   email: string;
-  username: string;
+  firstName: string;
+  lastName: string;
   points: number;
   leagueRank: number;
   exactBetCount: number;
@@ -11,4 +12,8 @@ export interface Profile {
     id: string;
     team: { name: string; flag: string };
   } | null;
+}
+
+export interface SignInResponse {
+  access_token: string;
 }

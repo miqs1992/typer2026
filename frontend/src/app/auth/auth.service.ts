@@ -1,10 +1,10 @@
 import { computed, inject, Injectable, signal } from '@angular/core';
 import { StorageService } from '../core/services/storage/storage.service';
 import { StorageKey } from '../core/services/storage/storage.model';
-import { Profile } from './auth.model';
+import { Profile, SignInResponse } from './auth.model';
 import { currentUserMock } from './auth.mock';
-import { delay, of, tap } from 'rxjs';
-import { rankingDataMock } from '../pages/ranking/ranking-data.mock';
+import { map, tap } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -12,26 +12,23 @@ import { rankingDataMock } from '../pages/ranking/ranking-data.mock';
 export class AuthService {
   #token = signal<string>('');
   #storage = inject(StorageService);
+  #httpClient = inject(HttpClient);
   isLoggedIn = computed(() => this.#token().length > 0);
   #currentUser = signal<Profile | null>(null);
 
   constructor() {
     const token = this.#storage.read(StorageKey.AUTH_TOKEN);
-    console.log('Auth Service Initialized, Token:', token);
     if (token) {
       this.#token.set(token);
     }
   }
 
-  public async login(email: string, password: string) {
-    try {
-      const token = await Promise.resolve(new Date().getTime().toString() + email + password);
-      this.#token.set(token);
-      this.#storage.save(StorageKey.AUTH_TOKEN, token);
-    } catch (error) {
-      console.error('Error during login request', error);
-      return Promise.reject(error);
-    }
+  public login(email: string, password: string) {
+    return this.#httpClient.post<SignInResponse>('auth/login', { email, password })
+      .pipe(tap(res => {
+        this.#token.set(res.access_token);
+        this.#storage.save(StorageKey.AUTH_TOKEN, res.access_token);
+      }))
   }
 
   public getToken() {
@@ -53,8 +50,12 @@ export class AuthService {
       return this.#currentUser()!;
     }
 
-    return of(currentUserMock).pipe(delay(100)).pipe(
-      tap(data => this.#currentUser.set(data))
-    );
+    return this.#httpClient.get<Profile>('users/me').pipe(
+      map(fetchedUserData => {
+        const fullProfile = { ...currentUserMock, ...fetchedUserData };
+        this.#currentUser.set(fullProfile);
+        return fullProfile;
+      })
+    )
   }
 }
