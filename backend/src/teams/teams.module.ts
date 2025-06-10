@@ -6,12 +6,10 @@ import { PlayersService } from "./players.service";
 import { TeamsService } from "./teams.service";
 import { TeamsController } from './teams.controller';
 import { AuthService } from "../auth/auth.service";
-import { AuthModule } from "../auth/auth.module";
 import { UsersService } from "../users/users.service";
-import { UsersModule } from "../users/users.module";
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Team, Player]), AuthModule, UsersModule],
+  imports: [TypeOrmModule.forFeature([Team, Player])],
   providers: [PlayersService, TeamsService, AuthService, UsersService],
   controllers: [TeamsController],
 })
