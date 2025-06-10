@@ -5,8 +5,8 @@ Content-Type: application/json
   "email": "miqs1992@gmail.com",
   "firstName": "Wojtek",
   "lastName": "Mikusek",
-  "password": "test123!",
-  "passwordConfirmation": "test123!"
+  "password": "Test123!",
+  "passwordConfirmation": "Test123!"
 }
 
 ###
@@ -15,7 +15,7 @@ Content-Type: application/json
 
 {
   "email": "miqs1992@gmail.com",
-  "password": "test123!"
+  "password": "Test123!"
 }
 
 > {%
@@ -27,3 +27,14 @@ Content-Type: application/json
 GET http://localhost:3000/users/me
 Content-Type: application/json
 Authorization: Bearer {{backendToken}}
+
+###
+POST http://localhost:3000/rounds
+Content-Type: application/json
+
+{
+  "name": "Group 1",
+  "order": 1,
+  "scoreFactor": 1.0,
+  "stage": "GROUP"
+}

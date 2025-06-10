@@ -7,3 +7,5 @@ export interface JwtTokenPayload {
 }
 
 export type AuthenticatedRequest = Request & { currentUserId: string };
+export type AuthenticatedAdminRequest = AuthenticatedRequest & { isAdmin: boolean };
+

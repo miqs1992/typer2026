@@ -46,6 +46,11 @@ export class AuthService {
     return this.jwtService.verifyAsync<JwtTokenPayload>(token);
   }
 
+  public async isAdmin(userId: string): Promise<boolean> {
+    const user = await this.usersService.findOne(userId);
+    return user?.isAdmin ?? false;
+  }
+
   public extractTokenFromHeader(request: Request): string | undefined {
     const [type, token] = request.headers.authorization?.split(' ') ?? [];
 

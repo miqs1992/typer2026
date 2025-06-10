@@ -4,11 +4,13 @@ import { CreateUserDto } from "./user.dto";
 import { User } from "./user.entity";
 import { AuthGuard } from 'src/auth/auth.guard';
 import { AuthenticatedRequest } from 'src/auth/auth.types';
+import { AdminGuard } from "../auth/admin.guard";
 
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
+  @UseGuards(AdminGuard)
   @Post('/')
   public async createUser(
     @Body() data: CreateUserDto,
