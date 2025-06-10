@@ -14,6 +14,7 @@ export const routes: Routes = [
       { path: '', component: Home },
       { path: 'rounds', component: Rounds },
       { path: 'ranking', component: Ranking },
+      { path: 'admin', loadChildren: () => import('./pages/admin/admin.routes').then(m => m.routes) },
     ], resolve: {
       currentUser: CurrentUserResolver
     },

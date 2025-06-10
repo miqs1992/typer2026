@@ -1,0 +1,36 @@
+<h3>Add new user</h3>
+<form [formGroup]="form" (ngSubmit)="onSubmit()" >
+  <mat-form-field>
+    <input matInput placeholder="Email" name="email" type="email" formControlName="email"/>
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput placeholder="First Name" name="firstName" type="firstName" formControlName="firstName"/>
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput placeholder="Last Name" name="lastName" type="lastName" formControlName="lastName"/>
+  </mat-form-field>
+
+  <div class="passwords" formGroupName="passwords">
+    <mat-form-field>
+      <input matInput placeholder="Password" name="password" formControlName="password" type="password"/>
+    </mat-form-field>
+    <mat-form-field>
+      <input
+        matInput
+        placeholder="Password Confirmation"
+        name="passwordConfirmation"
+        formControlName="passwordConfirmation"
+        type="password"
+      />
+    </mat-form-field>
+  </div>
+
+  <button
+    mat-raised-button
+    color="primary"
+    type="submit"
+    [disabled]="form.invalid || form.pristine"
+  >
+    Create new user
+  </button>
+</form>

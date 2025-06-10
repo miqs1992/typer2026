@@ -6,10 +6,11 @@ import { Container } from '../container/container';
 import { NgOptimizedImage } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../auth/auth.service';
+import { MatMenu, MatMenuItem, MatMenuTrigger } from '@angular/material/menu';
 
 @Component({
   selector: 'app-navbar',
-  imports: [MatToolbarModule, MatIcon, MatIconButton, Container, NgOptimizedImage, RouterLink, MatButton],
+  imports: [MatToolbarModule, MatIcon, MatIconButton, Container, NgOptimizedImage, RouterLink, MatButton, MatMenu, MatMenuTrigger, MatMenuItem],
   templateUrl: './navbar.html',
   styleUrl: './navbar.scss'
 })

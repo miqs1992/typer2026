@@ -1,22 +1,12 @@
-import { Body, Controller, Get, NotFoundException, Post, Req, UseGuards } from '@nestjs/common';
+import { Controller, Get, NotFoundException, Req, UseGuards } from '@nestjs/common';
 import { UsersService } from "./users.service";
-import { CreateUserDto } from "./user.dto";
 import { User } from "./user.entity";
 import { AuthGuard } from 'src/auth/auth.guard';
 import { AuthenticatedRequest } from 'src/auth/auth.types';
-import { AdminGuard } from "../auth/admin.guard";
 
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
-
-  @UseGuards(AdminGuard)
-  @Post('/')
-  public async createUser(
-    @Body() data: CreateUserDto,
-  ): Promise<User> {
-    return this.usersService.create(data);
-  }
 
   @Get('/me')
   @UseGuards(AuthGuard)

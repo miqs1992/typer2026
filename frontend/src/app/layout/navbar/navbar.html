@@ -9,6 +9,13 @@
       </a>
       <a matButton routerLink="/ranking">Ranking</a>
       <a matButton routerLink="/rounds">Rounds</a>
+      <button matButton [matMenuTriggerFor]="admin">Admin</button>
+      <mat-menu #admin="matMenu">
+        <a mat-menu-item routerLink="/admin/users">Users</a>
+        <a mat-menu-item routerLink="/admin/teams">Team & players</a>
+        <a mat-menu-item routerLink="/admin/rounds">Rounds & matches</a>
+      </mat-menu>
+
       <button matIconButton aria-label="Logout button" (click)="onLogout()">
         <mat-icon>logout</mat-icon>
       </button>

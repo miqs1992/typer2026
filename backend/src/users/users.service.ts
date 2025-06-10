@@ -1,7 +1,7 @@
 
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { FindOptionsOrder, Repository } from 'typeorm';
 import { User } from './user.entity';
 import { CreateUserDto } from "./user.dto";
 import * as bcrypt from 'bcrypt';
@@ -13,8 +13,8 @@ export class UsersService {
     private usersRepository: Repository<User>,
   ) {}
 
-  findAll(): Promise<User[]> {
-    return this.usersRepository.find();
+  findAll(order?: FindOptionsOrder<User>): Promise<User[]> {
+    return this.usersRepository.find({ order });
   }
 
   findOne(id: string): Promise<User | null> {
