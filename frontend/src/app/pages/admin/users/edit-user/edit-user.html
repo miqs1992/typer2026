@@ -1,0 +1,47 @@
+@if (editedUser()) {
+  <h3>Update user</h3>
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" >
+    <mat-form-field>
+      <input matInput placeholder="Email" name="email" type="email" formControlName="email"/>
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput placeholder="First Name" name="firstName" type="firstName" formControlName="firstName"/>
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput placeholder="Last Name" name="lastName" type="lastName" formControlName="lastName"/>
+    </mat-form-field>
+    <mat-checkbox formControlName="isAdmin">Is Admin?</mat-checkbox>
+    <mat-checkbox formControlName="hasPaid">Has Paid?</mat-checkbox>
+
+    <div class="passwords" formGroupName="passwords" style="margin-bottom: 20px; margin-top: 20px;">
+      <mat-form-field>
+        <input matInput placeholder="Password" name="password" formControlName="password" type="password"/>
+      </mat-form-field>
+      <mat-form-field>
+        <input
+          matInput
+          placeholder="Password Confirmation"
+          name="passwordConfirmation"
+          formControlName="passwordConfirmation"
+          type="password"
+        />
+        <mat-hint>Leave password fields empty to keep the current password.</mat-hint>
+      </mat-form-field>
+    </div>
+
+    <button
+      matButton="filled"
+      color="primary"
+      type="submit"
+      [disabled]="form.invalid || form.pristine"
+    >
+      Update user
+    </button>
+    <a matButton="outlined" routerLink="../.." style="margin-top: 10px;">
+      Cancel
+    </a>
+  </form>
+} @else {
+  <mat-spinner></mat-spinner>
+}
+

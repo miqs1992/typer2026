@@ -23,3 +23,10 @@ export interface CreateUserData {
   password: string;
   passwordConfirmation: string;
 }
+
+export interface UpdateUserData extends Omit<CreateUserData, 'password' | 'passwordConfirmation'> {
+  isAdmin: boolean;
+  hasPaid: boolean;
+  password?: string;
+  passwordConfirmation?: string;
+}

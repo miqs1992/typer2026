@@ -26,11 +26,14 @@
   </div>
 
   <button
-    mat-raised-button
+    matButton="filled"
     color="primary"
     type="submit"
     [disabled]="form.invalid || form.pristine"
   >
     Create new user
   </button>
+  <a matButton="outlined" routerLink=".." style="margin-top: 10px;">
+    Cancel
+  </a>
 </form>

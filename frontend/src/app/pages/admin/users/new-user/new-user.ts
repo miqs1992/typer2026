@@ -1,9 +1,10 @@
 import { Component, DestroyRef, inject } from '@angular/core';
-import { AbstractControl, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatFormField, MatInput } from '@angular/material/input';
 import { MatButton } from '@angular/material/button';
 import { UsersService } from '../users.service';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
+import { equalValues } from '../../../../helpers/equal-values.validator';
 
 @Component({
   selector: 'app-new-user',
@@ -12,7 +13,8 @@ import { Router } from '@angular/router';
     MatFormField,
     MatInput,
     MatFormField,
-    MatButton
+    MatButton,
+    RouterLink
   ],
   templateUrl: './new-user.html',
   styleUrl: './new-user.scss'
@@ -39,16 +41,8 @@ export class NewUser {
       passwordConfirmation: new FormControl('', {
         validators: [Validators.required, Validators.minLength(8)],
       }),
-    }, { validators: this.equalValues('password', 'passwordConfirmation') }),
+    }, { validators: equalValues('password', 'passwordConfirmation') }),
   });
-
-  equalValues(control1Name: string, control2Name: string) {
-    return (group: AbstractControl) => {
-      const value1 = group.get(control1Name)?.value;
-      const value2 = group.get(control2Name)?.value;
-      return value1 === value2 ? null : { valuesMismatch: true };
-    };
-  }
 
   onSubmit() {
     if (this.form.invalid) {

@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit } from '@angular/core';
 import { UsersService } from './users.service';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import {
@@ -14,7 +14,7 @@ import {
   MatTable
 } from '@angular/material/table';
 import { MatIcon } from '@angular/material/icon';
-import { MatIconButton } from '@angular/material/button';
+import { MatFabButton, MatIconButton } from '@angular/material/button';
 import { RouterLink } from '@angular/router';
 
 @Component({
@@ -34,11 +34,13 @@ import { RouterLink } from '@angular/router';
     MatIcon,
     MatIconButton,
     RouterLink,
+    MatFabButton,
   ],
   templateUrl: './users.html',
   styleUrl: './users.scss'
 })
 export class Users implements OnInit {
+  #onDestroy = inject(DestroyRef);
   readonly #usersService = inject(UsersService);
 
   // Computed values
@@ -46,9 +48,27 @@ export class Users implements OnInit {
   readonly isLoading = this.#usersService.isLoading;
   readonly error = this.#usersService.error;
 
-  displayedColumns = ['name', 'email', 'isAdmin', 'hasPaid', 'leagueRank'];
+  displayedColumns = ['name', 'email', 'isAdmin', 'hasPaid', 'leagueRank', 'actions'];
 
   ngOnInit(): void {
     this.#usersService.loadUsers();
+  }
+
+  deleteUser(userId: string) {
+    if (confirm('Are you sure you want to delete this user?')) {
+      const sub = this.#usersService.deleteUser(userId).subscribe({
+        next: () => {
+          console.log(`User with ID ${userId} deleted successfully.`);
+          this.#usersService.loadUsers(); // Reload users after deletion
+        },
+        error: (err) => {
+          console.error(`Error deleting user with ID ${userId}:`, err);
+        }
+      });
+
+      this.#onDestroy.onDestroy(() => {
+        sub.unsubscribe();
+      });
+    }
   }
 }

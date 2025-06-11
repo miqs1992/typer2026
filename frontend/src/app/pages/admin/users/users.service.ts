@@ -1,5 +1,5 @@
 import { computed, inject, Injectable, signal } from '@angular/core';
-import { CreateUserData, User, UserServiceState } from './users.model';
+import { CreateUserData, UpdateUserData, User, UserServiceState } from './users.model';
 import { HttpClient } from '@angular/common/http';
 import { catchError, finalize, map } from 'rxjs';
 
@@ -44,6 +44,18 @@ export class UsersService {
 
   createUser(data: CreateUserData) {
     return this.#httpClient.post('admin/users', data)
+  }
+
+  deleteUser(id: string) {
+    return this.#httpClient.delete(`admin/users/${id}`)
+  }
+
+  getUser(id: string) {
+    return this.#httpClient.get<User>(`admin/users/${id}`)
+  }
+
+  updateUser(id: string, data: UpdateUserData) {
+    return this.#httpClient.put(`admin/users/${id}`, data)
   }
 
   #updateState(partialState: Partial<UserServiceState>): void {

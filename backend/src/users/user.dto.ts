@@ -6,6 +6,13 @@ export interface CreateUserDto {
   lastName: string;
 }
 
+export interface UpdateUserDto extends Omit<CreateUserDto, 'password' | 'passwordConfirmation'> {
+  isAdmin: boolean;
+  hasPaid: boolean;
+  password?: string;
+  passwordConfirmation?: string;
+}
+
 export interface AdminUserDto {
   id: string;
   firstName: string;
