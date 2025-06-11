@@ -3,6 +3,7 @@ export interface Profile {
   email: string;
   firstName: string;
   lastName: string;
+  isAdmin: boolean;
   points: number;
   leagueRank: number;
   exactBetCount: number;

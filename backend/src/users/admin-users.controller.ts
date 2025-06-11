@@ -17,10 +17,10 @@ export class AdminUsersController {
   }
 
   @Get('/')
-  public async getAllUsers(): Promise<{ users: AdminUserDto[] }> {
+  public async getAllUsers(): Promise<{ items: AdminUserDto[] }> {
     const users = await this.usersService.findAll({ leagueRank: 'ASC' });
 
-    return { users: users.map(this.mapUserToAdminDto) };
+    return { items: users.map(this.mapUserToAdminDto) };
   }
 
   @Get('/:id')

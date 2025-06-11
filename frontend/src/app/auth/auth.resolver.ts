@@ -11,6 +11,6 @@ export class CurrentUserResolver implements Resolve<Profile> {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<Profile>|Promise<Profile>|Profile {
-    return this.service.getCurrentUser();
+    return this.service.loadCurrentUser();
   }
 }

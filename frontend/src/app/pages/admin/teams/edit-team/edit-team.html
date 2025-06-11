@@ -1,0 +1,23 @@
+<h3>Add new team</h3>
+<form [formGroup]="form" (ngSubmit)="onSubmit()" >
+  <mat-form-field>
+    <input matInput placeholder="Name" name="name" type="name" formControlName="name"/>
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput placeholder="Flag" name="flag" type="flag" formControlName="flag"/>
+  </mat-form-field>
+  <mat-checkbox formControlName="winner">Is winner?</mat-checkbox>
+
+  <button
+    matButton="filled"
+    color="primary"
+    type="submit"
+    [disabled]="form.invalid || form.pristine"
+    style="margin-top: 10px;"
+  >
+    Update team
+  </button>
+  <a matButton="outlined" routerLink="../.." style="margin-top: 10px;">
+    Cancel
+  </a>
+</form>

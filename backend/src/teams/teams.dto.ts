@@ -8,3 +8,7 @@ export interface CreateTeamDto {
   flag: string;
 }
 
+export interface UpdateTeamDto extends CreateTeamDto {
+  winner: boolean;
+}
+

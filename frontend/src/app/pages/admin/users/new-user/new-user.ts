@@ -50,7 +50,7 @@ export class NewUser {
       return;
     }
 
-    const sub = this.#usersService.createUser({
+    const sub = this.#usersService.createResource({
       email: this.form.value.email!,
       firstName: this.form.value.firstName!,
       lastName: this.form.value.lastName!,

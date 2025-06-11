@@ -4,13 +4,13 @@ import { Team } from "./team.entity";
 import { Player } from "./player.entity";
 import { PlayersService } from "./players.service";
 import { TeamsService } from "./teams.service";
-import { TeamsController } from './teams.controller';
+import { AdminTeamsController } from './admin-teams.controller';
 import { AuthService } from "../auth/auth.service";
 import { UsersService } from "../users/users.service";
 
 @Module({
   imports: [TypeOrmModule.forFeature([Team, Player])],
   providers: [PlayersService, TeamsService, AuthService, UsersService],
-  controllers: [TeamsController],
+  controllers: [AdminTeamsController],
 })
 export class TeamsModule {}

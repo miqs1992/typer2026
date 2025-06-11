@@ -56,7 +56,7 @@ export class EditUser implements OnInit {
   });
 
   ngOnInit() {
-    const sub = this.#usersService.getUser(this.userId()).subscribe({
+    const sub = this.#usersService.getResource(this.userId()).subscribe({
       next: (user) => {
         this.editedUser.set(user);
         this.form.setValue({
@@ -101,7 +101,7 @@ export class EditUser implements OnInit {
       updateData.passwordConfirmation = this.form.value.passwords!.passwordConfirmation!;
     }
 
-    this.#usersService.updateUser(this.userId(), updateData).subscribe({
+    this.#usersService.updateResource(this.userId(), updateData).subscribe({
       next: () => {
         this.#router.navigate(['admin', 'users'], { replaceUrl: true });
       },

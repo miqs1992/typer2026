@@ -15,9 +15,11 @@ export class AuthService {
   #httpClient = inject(HttpClient);
   isLoggedIn = computed(() => this.#token().length > 0);
   #currentUser = signal<Profile | null>(null);
+  loadedCurrentUser = this.#currentUser.asReadonly();
 
   constructor() {
     const token = this.#storage.read(StorageKey.AUTH_TOKEN);
+    console.log('AuthService initialized, token:', token);
     if (token) {
       this.#token.set(token);
     }
@@ -41,7 +43,7 @@ export class AuthService {
     this.#currentUser.set(null);
   }
 
-  public getCurrentUser() {
+  public loadCurrentUser() {
     if(!this.isLoggedIn()) {
       throw new Error('User is not logged in');
     }

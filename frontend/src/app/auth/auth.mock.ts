@@ -5,6 +5,7 @@ export const currentUserMock: Profile = {
   firstName: 'Peggi',
   lastName: 'Borton',
   email: 'carmin_mellorc@neural.bos',
+  isAdmin: false,
   points: 34.5,
   exactBetCount: 3,
   leagueRank: 3,

@@ -51,15 +51,15 @@ export class Users implements OnInit {
   displayedColumns = ['name', 'email', 'isAdmin', 'hasPaid', 'leagueRank', 'actions'];
 
   ngOnInit(): void {
-    this.#usersService.loadUsers();
+    this.#usersService.loadResources();
   }
 
   deleteUser(userId: string) {
     if (confirm('Are you sure you want to delete this user?')) {
-      const sub = this.#usersService.deleteUser(userId).subscribe({
+      const sub = this.#usersService.deleteResource(userId).subscribe({
         next: () => {
           console.log(`User with ID ${userId} deleted successfully.`);
-          this.#usersService.loadUsers(); // Reload users after deletion
+          this.#usersService.loadResources(); // Reload users after deletion
         },
         error: (err) => {
           console.error(`Error deleting user with ID ${userId}:`, err);

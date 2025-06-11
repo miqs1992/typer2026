@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Team } from "./team.entity";
-import { CreateTeamDto } from "./teams.dto";
+import { CreateTeamDto, UpdateTeamDto } from "./teams.dto";
 
 @Injectable()
 export class TeamsService {
@@ -12,7 +12,7 @@ export class TeamsService {
   ) {}
 
   findAll(): Promise<Team[]> {
-    return this.teamsRepository.find();
+    return this.teamsRepository.find({order: { name: 'ASC' }});
   }
 
   findOne(id: string): Promise<Team | null> {
@@ -26,5 +26,14 @@ export class TeamsService {
   async create(teamData: CreateTeamDto): Promise<Team> {
     const team = this.teamsRepository.create(teamData);
     return this.teamsRepository.save(team);
+  }
+
+  async update(id: string, teamData: UpdateTeamDto): Promise<Team> {
+    const team = await this.findOne(id);
+    if (!team) {
+      throw new Error('Team not found');
+    }
+
+    return this.teamsRepository.save({ ...team, ...teamData });
   }
 }

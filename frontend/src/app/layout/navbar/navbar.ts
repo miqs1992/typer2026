@@ -18,6 +18,7 @@ export class Navbar {
   #authService = inject(AuthService);
   #router = inject(Router);
   isLoggedIn = this.#authService.isLoggedIn;
+  currentUser = this.#authService.loadedCurrentUser
 
   onLogout() {
     this.#authService.logout();

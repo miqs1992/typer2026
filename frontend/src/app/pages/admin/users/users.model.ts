@@ -10,12 +10,6 @@ export interface User {
   updatedAt: Date;
 }
 
-export interface UserServiceState {
-  users: User[];
-  isLoading: boolean;
-  error: string | null;
-}
-
 export interface CreateUserData {
   firstName: string;
   lastName: string;
