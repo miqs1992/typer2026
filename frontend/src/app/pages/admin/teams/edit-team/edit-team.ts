@@ -19,7 +19,7 @@ import { MatCheckbox } from '@angular/material/checkbox';
     MatCheckbox
   ],
   templateUrl: './edit-team.html',
-  styleUrl: '../../users/new-user/new-user.scss',
+  styleUrl: '../../admin-form.scss',
 })
 export class EditTeam implements OnInit {
   readonly #router = inject(Router);
@@ -82,5 +82,4 @@ export class EditTeam implements OnInit {
       sub.unsubscribe();
     });
   };
-
 }

@@ -23,7 +23,7 @@ import { MatFormField, MatHint, MatInput } from '@angular/material/input';
     RouterLink,
   ],
   templateUrl: './edit-user.html',
-  styleUrl: '../new-user/new-user.scss',
+  styleUrl: '../../admin-form.scss',
 })
 export class EditUser implements OnInit {
   #router = inject(Router);

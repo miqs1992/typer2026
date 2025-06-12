@@ -17,7 +17,7 @@ import { equalValues } from '../../../../helpers/equal-values.validator';
     RouterLink
   ],
   templateUrl: './new-user.html',
-  styleUrl: './new-user.scss'
+  styleUrl: '../../admin-form.scss'
 })
 export class NewUser {
   #router = inject(Router);

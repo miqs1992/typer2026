@@ -2,31 +2,38 @@
   <mat-spinner></mat-spinner>
 } @else {
   <h1>
-    Teams
+    {{title()}}
     <a matFab routerLink="./new" style="float: right;">
       <mat-icon>add</mat-icon>
     </a>
   </h1>
 
-  <table mat-table [dataSource]="teams()" class="mat-elevation-z8">
+  <table mat-table [dataSource]="players()" class="mat-elevation-z8">
     <ng-container matColumnDef="name">
       <th mat-header-cell *matHeaderCellDef> Name </th>
       <td mat-cell *matCellDef="let element">
-        <a [routerLink]="['./', element.id, 'players']">
-          {{ element.name}}
-        </a>
+        <app-flag-icon [country]="element.team.flag" />
+        {{ element.name}}
       </td>
     </ng-container>
 
-    <ng-container matColumnDef="flag">
-      <th mat-header-cell *matHeaderCellDef> Flag </th>
+    <ng-container matColumnDef="goals">
+      <th mat-header-cell *matHeaderCellDef> Goals </th>
       <td mat-cell *matCellDef="let element">
-        <app-flag-icon [country]="element.flag" />
+        {{ element.goals }}
       </td>
     </ng-container>
 
-    <ng-container matColumnDef="winner">
-      <th mat-header-cell *matHeaderCellDef> Winner </th>
+    <ng-container matColumnDef="assists">
+      <th mat-header-cell *matHeaderCellDef> Assists </th>
+      <td mat-cell *matCellDef="let element">
+        {{ element.assists }}
+      </td>
+    </ng-container>
+
+
+    <ng-container matColumnDef="king">
+      <th mat-header-cell *matHeaderCellDef> King </th>
       <td mat-cell *matCellDef="let element">
         <mat-icon>{{ element.winner ? "check_circle" : "close" }}</mat-icon>
       </td>
@@ -38,7 +45,7 @@
         <a matIconButton [routerLink]="['./', element.id, 'edit']">
           <mat-icon>edit</mat-icon>
         </a>
-        <button matIconButton (click)="deleteTeam(element.id)">
+        <button matIconButton (click)="deletePlayer(element.id)">
           <mat-icon>delete</mat-icon>
         </button>
       </td>

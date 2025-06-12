@@ -1,0 +1,31 @@
+<h3>Edit player</h3>
+<form [formGroup]="form" (ngSubmit)="onSubmit()" >
+  <mat-form-field>
+    <input matInput placeholder="Name" name="name" type="text" formControlName="name"/>
+  </mat-form-field>
+
+  <mat-form-field floatLabel="always">
+    <mat-label>Goals</mat-label>
+    <input matInput name="goals" type="number" formControlName="goals"/>
+  </mat-form-field>
+
+  <mat-form-field floatLabel="always">
+    <mat-label>Assists</mat-label>
+    <input matInput name="assists" type="number" formControlName="assists"/>
+  </mat-form-field>
+
+  <mat-checkbox formControlName="king">Is king?</mat-checkbox>
+
+  <button
+    matButton="filled"
+    color="primary"
+    type="submit"
+    [disabled]="form.invalid || form.pristine"
+    style="margin-top: 10px;"
+  >
+    Update player
+  </button>
+  <a matButton="outlined" routerLink="../.." style="margin-top: 10px;">
+    Cancel
+  </a>
+</form>

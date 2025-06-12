@@ -1,17 +1,13 @@
 import { Body, Controller, Delete, Get, NotFoundException, Param, Post, Put, UseGuards } from '@nestjs/common';
-import { CreatePlayerDto, CreateTeamDto, UpdateTeamDto } from "./teams.dto";
+import { CreateTeamDto, UpdateTeamDto } from "./teams.dto";
 import { Team } from "./team.entity";
 import { TeamsService } from "./teams.service";
-import { PlayersService } from "./players.service";
 import { AdminGuard } from "../auth/admin.guard";
 
 @UseGuards(AdminGuard)
 @Controller('admin/teams')
 export class AdminTeamsController {
-  constructor(
-    private readonly teamsService: TeamsService,
-    private readonly playersService: PlayersService,
-  ) {}
+  constructor(private readonly teamsService: TeamsService) {}
 
   @Get('/')
   public async getAllTeams(): Promise<{ items: Team[] }> {
@@ -24,14 +20,6 @@ export class AdminTeamsController {
     @Body() data: CreateTeamDto,
   ): Promise<Team> {
     return this.teamsService.create(data);
-  }
-
-  @Post('/:teamId/players')
-  public async createPlayer(
-    @Param('teamId') teamId: string,
-    @Body() data: Omit<CreatePlayerDto, 'teamId'>,
-  ) {
-    return this.playersService.create({ ...data, teamId });
   }
 
   @Delete('/:teamId')

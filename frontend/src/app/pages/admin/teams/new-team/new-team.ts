@@ -16,7 +16,7 @@ import { TeamsService } from '../teams.service';
     MatFormField
   ],
   templateUrl: './new-team.html',
-  styleUrl: '../../users/new-user/new-user.scss',
+  styleUrl: '../../admin-form.scss',
 })
 export class NewTeam {
   readonly #router = inject(Router);

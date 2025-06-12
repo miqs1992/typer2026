@@ -1,4 +1,4 @@
-import { computed, Injectable } from '@angular/core';
+import { computed, Injectable, signal } from '@angular/core';
 import { CreateTeamData, Team, UpdateTeamData } from './teams.model';
 import { DataService } from '../data.service';
 
@@ -6,7 +6,7 @@ import { DataService } from '../data.service';
   providedIn: 'root'
 })
 export class TeamsService extends DataService<Team, CreateTeamData, UpdateTeamData> {
-  path = 'admin/teams';
+  path = signal('admin/teams');
 
   readonly teams =  computed(() => this.state().data);
 }

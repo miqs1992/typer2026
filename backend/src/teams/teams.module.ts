@@ -7,10 +7,11 @@ import { TeamsService } from "./teams.service";
 import { AdminTeamsController } from './admin-teams.controller';
 import { AuthService } from "../auth/auth.service";
 import { UsersService } from "../users/users.service";
+import { AdminPlayersController } from "./admin-players.controller";
 
 @Module({
   imports: [TypeOrmModule.forFeature([Team, Player])],
   providers: [PlayersService, TeamsService, AuthService, UsersService],
-  controllers: [AdminTeamsController],
+  controllers: [AdminPlayersController, AdminTeamsController],
 })
 export class TeamsModule {}
