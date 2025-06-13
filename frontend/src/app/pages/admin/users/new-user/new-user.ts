@@ -1,10 +1,10 @@
 import { Component, DestroyRef, inject } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatFormField, MatInput } from '@angular/material/input';
-import { MatButton } from '@angular/material/button';
 import { UsersService } from '../users.service';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import { equalValues } from '../../../../helpers/equal-values.validator';
+import { AdminFormWrapperComponent } from '../../../../shared/admin-form-wrapper/admin-form-wrapper.component';
 
 @Component({
   selector: 'app-new-user',
@@ -12,9 +12,7 @@ import { equalValues } from '../../../../helpers/equal-values.validator';
     ReactiveFormsModule,
     MatFormField,
     MatInput,
-    MatFormField,
-    MatButton,
-    RouterLink
+    AdminFormWrapperComponent
   ],
   templateUrl: './new-user.html',
   styleUrl: '../../admin-form.scss'
@@ -45,11 +43,6 @@ export class NewUser {
   });
 
   onSubmit() {
-    if (this.form.invalid) {
-      console.log('Form is invalid');
-      return;
-    }
-
     const sub = this.#usersService.createResource({
       email: this.form.value.email!,
       firstName: this.form.value.firstName!,

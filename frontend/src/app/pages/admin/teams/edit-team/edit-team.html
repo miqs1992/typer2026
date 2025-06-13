@@ -1,5 +1,11 @@
-<h3>Add new team</h3>
-<form [formGroup]="form" (ngSubmit)="onSubmit()" >
+<h3>Edit team</h3>
+<app-admin-form-wrapper
+  [formGroup]="form"
+  submitText="Update team"
+  [isSubmitDisabled]="form.invalid || form.pristine"
+  (formSubmit)="onSubmit()"
+  cancelLink="../.."
+>
   <mat-form-field>
     <input matInput placeholder="Name" name="name" type="name" formControlName="name"/>
   </mat-form-field>
@@ -7,17 +13,4 @@
     <input matInput placeholder="Flag" name="flag" type="flag" formControlName="flag"/>
   </mat-form-field>
   <mat-checkbox formControlName="winner">Is winner?</mat-checkbox>
-
-  <button
-    matButton="filled"
-    color="primary"
-    type="submit"
-    [disabled]="form.invalid || form.pristine"
-    style="margin-top: 10px;"
-  >
-    Update team
-  </button>
-  <a matButton="outlined" routerLink="../.." style="margin-top: 10px;">
-    Cancel
-  </a>
-</form>
+</app-admin-form-wrapper>

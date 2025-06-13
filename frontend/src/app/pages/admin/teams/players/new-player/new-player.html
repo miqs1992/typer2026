@@ -1,18 +1,12 @@
 <h3>Add new player</h3>
-<form [formGroup]="form" (ngSubmit)="onSubmit()" >
+<app-admin-form-wrapper
+  [formGroup]="form"
+  submitText="Create new player"
+  [isSubmitDisabled]="form.invalid || form.pristine"
+  (formSubmit)="onSubmit()"
+  cancelLink=".."
+>
   <mat-form-field>
     <input matInput placeholder="Name" name="name" type="name" formControlName="name"/>
   </mat-form-field>
-
-  <button
-    matButton="filled"
-    color="primary"
-    type="submit"
-    [disabled]="form.invalid || form.pristine"
-  >
-    Create new player
-  </button>
-  <a matButton="outlined" routerLink=".." style="margin-top: 10px;">
-    Cancel
-  </a>
-</form>
+</app-admin-form-wrapper>

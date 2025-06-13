@@ -1,26 +1,24 @@
 import { Component, DestroyRef, inject, input, OnInit, signal } from '@angular/core';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import { UsersService } from '../users.service';
 import { UpdateUserData, User } from '../users.model';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { equalValues } from '../../../../helpers/equal-values.validator';
-import { MatButton } from '@angular/material/button';
 import { MatCheckbox } from '@angular/material/checkbox';
 import { MatFormField, MatHint, MatInput } from '@angular/material/input';
+import { AdminFormWrapperComponent } from '../../../../shared/admin-form-wrapper/admin-form-wrapper.component';
 
 @Component({
   selector: 'app-edit-user',
   imports: [
     MatProgressSpinner,
-    MatButton,
     MatCheckbox,
     MatFormField,
     MatInput,
     ReactiveFormsModule,
-    MatFormField,
     MatHint,
-    RouterLink,
+    AdminFormWrapperComponent
   ],
   templateUrl: './edit-user.html',
   styleUrl: '../../admin-form.scss',
@@ -83,11 +81,6 @@ export class EditUser implements OnInit {
   }
 
   onSubmit() {
-    if (this.form.invalid) {
-      console.log('Form is invalid');
-      return;
-    }
-
     const updateData: UpdateUserData = {
       email: this.form.value.email!,
       firstName: this.form.value.firstName!,
@@ -101,14 +94,17 @@ export class EditUser implements OnInit {
       updateData.passwordConfirmation = this.form.value.passwords!.passwordConfirmation!;
     }
 
-    this.#usersService.updateResource(this.userId(), updateData).subscribe({
+    const sub = this.#usersService.updateResource(this.userId(), updateData).subscribe({
       next: () => {
         this.#router.navigate(['admin', 'users'], { replaceUrl: true });
       },
       error: (err) => {
-        console.error('Error creating user:', err);
+        console.error('Error updating user:', err);
       },
     })
-  }
-}
 
+    this.#destroyRef.onDestroy(() => {
+      sub.unsubscribe();
+    });
+  };
+}

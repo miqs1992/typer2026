@@ -1,22 +1,20 @@
 import { Component, DestroyRef, inject, input, OnInit, signal } from '@angular/core';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { MatButton } from '@angular/material/button';
 import { MatFormField, MatInput } from '@angular/material/input';
 import { TeamsService } from '../teams.service';
 import { Team } from '../teams.model';
 import { MatCheckbox } from '@angular/material/checkbox';
+import { AdminFormWrapperComponent } from '../../../../shared/admin-form-wrapper/admin-form-wrapper.component';
 
 @Component({
   selector: 'app-edit-team',
   imports: [
-    MatButton,
     MatFormField,
     MatInput,
     ReactiveFormsModule,
-    RouterLink,
-    MatFormField,
-    MatCheckbox
+    MatCheckbox,
+    AdminFormWrapperComponent
   ],
   templateUrl: './edit-team.html',
   styleUrl: '../../admin-form.scss',
@@ -60,11 +58,6 @@ export class EditTeam implements OnInit {
   }
 
   onSubmit() {
-    if (this.form.invalid) {
-      console.log('Form is invalid');
-      return;
-    }
-
     const sub = this.#teamsService.updateResource(this.teamId(), {
       name: this.form.value.name!,
       flag: this.form.value.flag!,
@@ -74,7 +67,7 @@ export class EditTeam implements OnInit {
         this.#router.navigate(['admin', 'teams'], { replaceUrl: true });
       },
       error: (err) => {
-        console.error('Error creating team:', err);
+        console.error('Error updating team:', err);
       },
     })
 

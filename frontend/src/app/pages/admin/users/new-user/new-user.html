@@ -1,5 +1,11 @@
 <h3>Add new user</h3>
-<form [formGroup]="form" (ngSubmit)="onSubmit()" >
+<app-admin-form-wrapper
+  [formGroup]="form"
+  submitText="Create new user"
+  [isSubmitDisabled]="form.invalid || form.pristine"
+  (formSubmit)="onSubmit()"
+  cancelLink=".."
+>
   <mat-form-field>
     <input matInput placeholder="Email" name="email" type="email" formControlName="email"/>
   </mat-form-field>
@@ -24,16 +30,4 @@
       />
     </mat-form-field>
   </div>
-
-  <button
-    matButton="filled"
-    color="primary"
-    type="submit"
-    [disabled]="form.invalid || form.pristine"
-  >
-    Create new user
-  </button>
-  <a matButton="outlined" routerLink=".." style="margin-top: 10px;">
-    Cancel
-  </a>
-</form>
+</app-admin-form-wrapper>

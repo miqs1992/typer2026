@@ -1,0 +1,20 @@
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+
+  & > * {
+    width: 400px;
+  }
+
+  .passwords {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+button[mat-flat-button],
+a[mat-stroked-button] {
+  margin-top: 10px;
+}
+

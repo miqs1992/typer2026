@@ -7,17 +7,3 @@
   flex-direction: column;
   margin-top: 20px
 }
-
-form {
-  display: flex;
-  flex-direction: column;
-
-  mat-form-field {
-    width: 400px;
-  }
-
-  .passwords {
-    display: flex;
-    flex-direction: column;
-  }
-}

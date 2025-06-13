@@ -1,24 +1,23 @@
 import { Component, DestroyRef, inject, input, OnInit, signal } from '@angular/core';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import { RoundsService } from '../rounds.service';
 import { Round, RoundStageLabels } from '../rounds.model';
 import { initRoundForm } from '../rounds.form';
-import { MatButton } from '@angular/material/button';
 import { MatFormField, MatInput, MatLabel } from '@angular/material/input';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatOption, MatSelect } from '@angular/material/select';
+import { AdminFormWrapperComponent } from '../../../../shared/admin-form-wrapper/admin-form-wrapper.component';
 
 @Component({
   selector: 'app-edit-round',
   imports: [
-    MatButton,
     MatFormField,
     MatInput,
     MatLabel,
     MatOption,
     MatSelect,
     ReactiveFormsModule,
-    RouterLink,
+    AdminFormWrapperComponent
   ],
   templateUrl: './edit-round.html',
   styleUrl: '../../admin-form.scss',
@@ -54,11 +53,6 @@ export class EditRound implements OnInit {
   }
 
   onSubmit() {
-    if (this.form.invalid) {
-      console.log('Form is invalid');
-      return;
-    }
-
     const sub = this.#roundsService.updateResource(this.roundId(), {
       name: this.form.value.name!,
       order: this.form.value.order!,
@@ -69,7 +63,7 @@ export class EditRound implements OnInit {
         this.#router.navigate(['admin', 'rounds'], { replaceUrl: true });
       },
       error: (err) => {
-        console.error('Error creating team:', err);
+        console.error('Error updating round:', err);
       },
     })
 

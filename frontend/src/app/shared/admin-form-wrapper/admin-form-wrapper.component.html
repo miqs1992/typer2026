@@ -1,0 +1,16 @@
+<form [formGroup]="formGroup()" (ngSubmit)="onSubmitInternal()">
+  <ng-content></ng-content> <!-- Form fields will be projected here -->
+
+  <button
+    mat-flat-button
+    color="primary"
+    type="submit"
+    [disabled]="isSubmitDisabled()"
+  >
+    {{ submitText() }}
+  </button>
+  <a mat-stroked-button [routerLink]="cancelLink()">
+    Cancel
+  </a>
+</form>
+

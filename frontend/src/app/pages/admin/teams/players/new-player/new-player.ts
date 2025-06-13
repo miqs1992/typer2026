@@ -1,18 +1,17 @@
 import { Component, DestroyRef, inject, input } from '@angular/core';
-import { MatButton } from '@angular/material/button';
 import { MatFormField, MatInput } from '@angular/material/input';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import { PlayersService } from '../../players.service';
+import { AdminFormWrapperComponent } from '../../../../../shared/admin-form-wrapper/admin-form-wrapper.component';
 
 @Component({
   selector: 'app-new-player',
   imports: [
-    MatButton,
     MatFormField,
     MatInput,
     ReactiveFormsModule,
-    RouterLink
+    AdminFormWrapperComponent
   ],
   templateUrl: './new-player.html',
   styleUrl: '../../../admin-form.scss'
@@ -30,11 +29,6 @@ export class NewPlayer {
   })
 
   onSubmit() {
-    if (this.form.invalid) {
-      console.log('Form is invalid');
-      return;
-    }
-
     this.#playersService.setTeam(this.teamId());
     const sub = this.#playersService.createResource({
       name: this.form.value.name!,
