@@ -4,3 +4,4 @@ export interface CreateRoundDto {
   scoreFactor: number;
   stage: string;
 }
+

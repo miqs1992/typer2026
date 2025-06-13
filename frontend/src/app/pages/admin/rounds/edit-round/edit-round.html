@@ -1,0 +1,34 @@
+<h3>Edit round</h3>
+<form [formGroup]="form" (ngSubmit)="onSubmit()" >
+  <mat-form-field>
+    <input matInput placeholder="Name" name="name" type="text" formControlName="name"/>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Order</mat-label>
+    <input matInput name="order" type="number" formControlName="order"/>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Score Factor</mat-label>
+    <input matInput name="scoreFactor" type="number" step="0.1" formControlName="scoreFactor"/>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Stage</mat-label>
+    <mat-select formControlName="stage">
+      @for (record of Object.entries(RoundStageLabels); track record[0]) {
+        <mat-option [value]="record[0]">{{record[1]}}</mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
+
+  <button
+    matButton="filled"
+    color="primary"
+    type="submit"
+    [disabled]="form.invalid || form.pristine"
+  >
+    Update round
+  </button>
+  <a matButton="outlined" routerLink=".." style="margin-top: 10px;">
+    Cancel
+  </a>
+</form>

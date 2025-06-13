@@ -28,4 +28,13 @@ export class RoundsService {
     const round = this.roundsRepository.create(roundData);
     return this.roundsRepository.save(round);
   }
+
+  async update(id: string, roundData: CreateRoundDto): Promise<Round> {
+    const round = await this.findOne(id);
+    if (!round) {
+      throw new Error('Round not found');
+    }
+
+    return this.roundsRepository.save({ ...round, ...roundData });
+  }
 }

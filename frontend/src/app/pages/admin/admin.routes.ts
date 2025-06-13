@@ -8,6 +8,9 @@ import { EditTeam } from './teams/edit-team/edit-team';
 import { Players } from './teams/players/players';
 import { NewPlayer } from './teams/players/new-player/new-player';
 import { EditPlayer } from './teams/players/edit-player/edit-player';
+import { Rounds } from './rounds/rounds';
+import { NewRound } from './rounds/new-round/new-round';
+import { EditRound } from './rounds/edit-round/edit-round';
 
 export const routes: Routes = [
   {
@@ -27,6 +30,15 @@ export const routes: Routes = [
       { path: ':teamId/players/new', component: NewPlayer },
       { path: ':teamId/players/:playerId/edit', component: EditPlayer },
       { path: ':teamId/edit', component: EditTeam },
+    ]
+  },
+  {
+    path: 'rounds',
+    children: [
+      { path: '', component: Rounds },
+      { path: 'new', component: NewRound },
+      { path: ':roundId/edit', component: EditRound },
+
     ]
   }
 ];

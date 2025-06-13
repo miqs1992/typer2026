@@ -1,0 +1,70 @@
+:host {
+  display: inline-flex;
+  align-items: center;
+  padding: 0 7px;
+  font-size: 12px;
+  line-height: 20px;
+  border-radius: 4px;
+  border: 1px solid;
+  box-sizing: border-box;
+  margin-right: 8px;
+  cursor: default;
+  opacity: 1;
+  transition: all 0.3s cubic-bezier(0.78, 0.14, 0.15, 0.86);
+
+  &.app-tag-closable {
+    padding-right: 5px; // Make space for the close icon
+  }
+}
+
+.app-tag-close-icon {
+  font-size: 16px;
+  height: 16px;
+  width: 16px;
+  margin-left: 4px;
+  cursor: pointer;
+  border-radius: 50%;
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.06);
+  }
+}
+
+// Predefined color styles
+:host(.app-tag-success) {
+  background-color: #f6ffed;
+  border-color: #b7eb8f;
+  color: #52c41a;
+}
+
+:host(.app-tag-processing) {
+  background-color: #e6f7ff;
+  border-color: #91d5ff;
+  color: #1890ff;
+}
+
+:host(.app-tag-error) {
+  background-color: #fff1f0;
+  border-color: #ffa39e;
+  color: #f5222d;
+}
+
+:host(.app-tag-warning) {
+  background-color: #fffbe6;
+  border-color: #ffe58f;
+  color: #faad14;
+}
+
+:host(.app-tag-default) {
+  background-color: #fafafa;
+  border-color: #d9d9d9;
+  color: rgba(0, 0, 0, 0.88);
+}
+
+// Custom color will be applied via host binding for background-color and border-color
+// Text color for custom tags might need to be adjusted based on background for contrast,
+// or a default dark/light text color can be used.
+// For simplicity, we'll use a default text color here if not a predefined one.
+:host:not(.app-tag-success):not(.app-tag-processing):not(.app-tag-error):not(.app-tag-warning):not(.app-tag-default) {
+  color: rgba(0, 0, 0, 0.88); // Default text color for custom background tags
+}
+

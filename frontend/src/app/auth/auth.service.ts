@@ -3,8 +3,9 @@ import { StorageService } from '../core/services/storage/storage.service';
 import { StorageKey } from '../core/services/storage/storage.model';
 import { Profile, SignInResponse } from './auth.model';
 import { currentUserMock } from './auth.mock';
-import { map, tap } from 'rxjs';
+import { catchError, map, tap } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -13,6 +14,7 @@ export class AuthService {
   #token = signal<string>('');
   #storage = inject(StorageService);
   #httpClient = inject(HttpClient);
+  #router = inject(Router);
   isLoggedIn = computed(() => this.#token().length > 0);
   #currentUser = signal<Profile | null>(null);
   loadedCurrentUser = this.#currentUser.asReadonly();
@@ -57,6 +59,11 @@ export class AuthService {
         const fullProfile = { ...currentUserMock, ...fetchedUserData };
         this.#currentUser.set(fullProfile);
         return fullProfile;
+      }),
+      catchError((err) => {
+        this.logout();
+        this.#router.navigate(['/auth/login']);
+        throw new Error('Failed to load current user: ' + err.message);
       })
     )
   }

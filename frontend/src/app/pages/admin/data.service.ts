@@ -6,7 +6,7 @@ import { DataServiceState } from './data.model';
 @Injectable({
   providedIn: 'root'
 })
-export abstract class DataService<T, CT, UT> {
+export abstract class DataService<T, CT, UT = CT> {
   protected abstract path: Signal<string>;
   protected httpClient = inject(HttpClient);
 
