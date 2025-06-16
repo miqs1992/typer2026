@@ -1,14 +1,17 @@
 import { Component, DestroyRef, inject, OnInit } from '@angular/core';
 import { RoundsService } from './rounds.service';
 import { RoundStage } from './rounds.model';
-import { FlagIcon } from '../../../shared/flag-icon/flag-icon';
 import {
   MatCell,
   MatCellDef,
   MatColumnDef,
-  MatHeaderCell, MatHeaderCellDef,
+  MatHeaderCell,
+  MatHeaderCellDef,
   MatHeaderRow,
-  MatHeaderRowDef, MatRow, MatRowDef, MatTable
+  MatHeaderRowDef,
+  MatRow,
+  MatRowDef,
+  MatTable
 } from '@angular/material/table';
 import { MatFabButton, MatIconButton } from '@angular/material/button';
 import { RouterLink } from '@angular/router';
@@ -20,7 +23,6 @@ import { TagComponent } from '../../../shared/tag/tag';
 @Component({
   selector: 'app-admin-rounds',
   imports: [
-    FlagIcon,
     MatCell,
     MatCellDef,
     MatColumnDef,

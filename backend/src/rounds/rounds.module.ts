@@ -10,5 +10,6 @@ import { UsersService } from "../users/users.service";
   imports: [TypeOrmModule.forFeature([Round])],
   controllers: [AdminRoundsController],
   providers: [RoundsService, AuthService, UsersService],
+  exports: [RoundsService, TypeOrmModule],
 })
 export class RoundsModule {}

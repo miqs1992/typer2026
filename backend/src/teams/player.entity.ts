@@ -1,11 +1,9 @@
-import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, Entity, ManyToOne } from "typeorm";
 import { Team } from "./team.entity";
+import { BaseResource } from "../shared/database/base-resource.entity";
 
 @Entity({ name: 'players' })
-export class Player {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
-
+export class Player extends BaseResource {
   @ManyToOne(
     () => Team,
     (team) => team.players,
@@ -24,14 +22,4 @@ export class Player {
 
   @Column({ default: false })
   king: boolean;
-
-  @CreateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP(6)" })
-  createdAt: Date;
-
-  @UpdateDateColumn({
-    type: "timestamp",
-    default: () => "CURRENT_TIMESTAMP(6)",
-    onUpdate: "CURRENT_TIMESTAMP(6)"
-  })
-  updatedAt: Date;
 }

@@ -1,0 +1,27 @@
+<h3>Add new match day</h3>
+<app-admin-form-wrapper
+  [formGroup]="form"
+  submitText="Create new match dyas"
+  [isSubmitDisabled]="form.invalid || form.pristine"
+  (formSubmit)="onSubmit()"
+  cancelLink=".."
+>
+  <mat-form-field>
+    <mat-label>Day Number</mat-label>
+    <input matInput name="dayNumber" type="number" formControlName="dayNumber"/>
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>Choose stop bet date</mat-label>
+    <input matInput [matDatepicker]="picker" formControlName="stopBetDate">
+    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>Choose stop bet time</mat-label>
+    <input matInput [matTimepicker]="timepicker" formControlName="stopBetTime">
+    <mat-timepicker-toggle matIconSuffix [for]="timepicker"/>
+    <mat-timepicker #timepicker/>
+  </mat-form-field>
+</app-admin-form-wrapper>

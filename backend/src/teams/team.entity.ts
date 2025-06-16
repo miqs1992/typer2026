@@ -1,11 +1,9 @@
-import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, Entity, OneToMany } from "typeorm";
 import { Player } from "./player.entity";
+import { BaseResource } from "../shared/database/base-resource.entity";
 
 @Entity({ name: 'teams' })
-export class Team {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
-
+export class Team extends BaseResource {
   @OneToMany(() => Player, (player) => player.team)
   players: Player[];
 
@@ -17,14 +15,4 @@ export class Team {
 
   @Column({ default: false })
   winner: boolean;
-
-  @CreateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP(6)" })
-  createdAt: Date;
-
-  @UpdateDateColumn({
-    type: "timestamp",
-    default: () => "CURRENT_TIMESTAMP(6)",
-    onUpdate: "CURRENT_TIMESTAMP(6)"
-  })
-  updatedAt: Date;
 }

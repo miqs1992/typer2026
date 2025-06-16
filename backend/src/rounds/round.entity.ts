@@ -1,12 +1,10 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, OneToMany } from 'typeorm';
+import { Column, Entity, OneToMany } from 'typeorm';
 import { RoundStage } from "./rounds.type";
 import { MatchDay } from "../match-days/match-day.entity";
+import { BaseResource } from "../shared/database/base-resource.entity";
 
 @Entity({ name: 'rounds' })
-export class Round {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
-
+export class Round extends BaseResource {
   @Column({ unique: true })
   name: string;
 
@@ -22,16 +20,6 @@ export class Round {
     default: RoundStage.GROUP
   })
   stage: string;
-
-  @CreateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP(6)" })
-  createdAt: Date;
-
-  @UpdateDateColumn({
-    type: "timestamp",
-    default: () => "CURRENT_TIMESTAMP(6)",
-    onUpdate: "CURRENT_TIMESTAMP(6)"
-  })
-  updatedAt: Date;
 
   @OneToMany(() => MatchDay, (matchDay) => matchDay.round)
   matchDays: MatchDay[];

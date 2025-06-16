@@ -1,12 +1,10 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, ManyToOne } from 'typeorm';
+import { Column, Entity, ManyToOne } from 'typeorm';
 import { Team } from "../teams/team.entity";
 import { Player } from "../teams/player.entity";
+import { BaseResource } from "../shared/database/base-resource.entity";
 
 @Entity({ name: 'users' })
-export class User {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
-
+export class User extends BaseResource {
   @Column()
   firstName: string;
 
@@ -47,11 +45,4 @@ export class User {
     { eager: true, nullable: true }
   )
   topScorer: Player;
-
-
-  @CreateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP(6)" })
-  createdAt: Date;
-
-  @UpdateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP(6)", onUpdate: "CURRENT_TIMESTAMP(6)" })
-  updatedAt: Date;
 }

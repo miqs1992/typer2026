@@ -1,12 +1,10 @@
-import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, ManyToOne } from "typeorm";
 import { MatchDay } from "../match-days/match-day.entity";
 import { Team } from "../teams/team.entity";
+import { BaseResource } from "../shared/database/base-resource.entity";
 
 @Entity({ name: 'matches' })
-export class Match {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
-
+export class Match extends BaseResource {
   @ManyToOne(
     () => MatchDay,
     (matchDay) => matchDay.matches,
@@ -36,14 +34,4 @@ export class Match {
 
   @CreateDateColumn({ type: "timestamp" })
   startsAt: Date;
-
-  @CreateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP(6)" })
-  createdAt: Date;
-
-  @UpdateDateColumn({
-    type: "timestamp",
-    default: () => "CURRENT_TIMESTAMP(6)",
-    onUpdate: "CURRENT_TIMESTAMP(6)"
-  })
-  updatedAt: Date;
 }
