@@ -2,13 +2,16 @@ import { computed, inject, Injectable, Signal, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { catchError, finalize, map } from 'rxjs';
 import { DataServiceState } from './data.model';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Injectable({
   providedIn: 'root'
 })
 export abstract class DataService<T, CT, UT = CT> {
   protected abstract path: Signal<string>;
+  protected abstract resourceName: string;
   protected httpClient = inject(HttpClient);
+  readonly #snackBar = inject(MatSnackBar);
 
   protected readonly state = signal<DataServiceState<T>>({
     data: [],
@@ -45,19 +48,39 @@ export abstract class DataService<T, CT, UT = CT> {
   }
 
   createResource(data: CT) {
-    return this.httpClient.post(this.path(), data)
+    return this.httpClient.post(this.path(), data).pipe(
+      catchError((error: Error) => {
+        this.#openSnackBar(`Failed to create ${this.resourceName}. Please try again.`);
+        throw error;
+      })
+    )
   }
 
   deleteResource(id: string) {
-    return this.httpClient.delete(`${this.path()}/${id}`)
+    return this.httpClient.delete(`${this.path()}/${id}`).pipe(
+      catchError((error: Error) => {
+        this.#openSnackBar(`Failed to delete ${this.resourceName}. Please try again.`);
+        throw error;
+      })
+    )
   }
 
   getResource(id: string) {
-    return this.httpClient.get<T>(`${this.path()}/${id}`)
+    return this.httpClient.get<T>(`${this.path()}/${id}`).pipe(
+        catchError((error: Error) => {
+          this.#openSnackBar(`Failed to load ${this.resourceName}. Please try again.`);
+          throw error;
+        })
+      )
   }
 
   updateResource(id: string, data: UT) {
-    return this.httpClient.put(`${this.path()}/${id}`, data)
+    return this.httpClient.put(`${this.path()}/${id}`, data).pipe(
+      catchError((error: Error) => {
+        this.#openSnackBar(`Failed to update ${this.resourceName}. Please try again.`);
+        throw error;
+      })
+    )
   }
 
   #updateState(partialState: Partial<DataServiceState<T>>): void {
@@ -65,5 +88,13 @@ export abstract class DataService<T, CT, UT = CT> {
       ...state,
       ...partialState,
     }));
+  }
+
+  #openSnackBar(message: string): void {
+    this.#snackBar.open(message, 'Close', {
+      duration: 3000,
+      horizontalPosition: 'center',
+      verticalPosition: 'top',
+    });
   }
 }

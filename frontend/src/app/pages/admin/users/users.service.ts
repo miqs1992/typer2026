@@ -7,6 +7,7 @@ import { DataService } from '../data.service';
 })
 export class UsersService extends DataService<User, CreateUserData, UpdateUserData> {
   path = signal('admin/users');
+  resourceName = 'user';
 
   readonly users = computed(() => this.state().data);
 }

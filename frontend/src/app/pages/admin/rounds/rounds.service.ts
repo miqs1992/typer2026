@@ -10,6 +10,7 @@ class CreateRoundData {
 })
 export class RoundsService extends DataService<Round, CreateRoundData> {
   path = signal('admin/rounds');
+  resourceName = 'round';
 
   readonly rounds =  computed(() => this.state().data);
 }

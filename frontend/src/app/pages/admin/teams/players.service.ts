@@ -7,6 +7,7 @@ import { CreatePlayerData, Player, UpdatePlayerData } from './players/players.mo
 })
 export class PlayersService extends DataService<Player, CreatePlayerData, UpdatePlayerData> {
   path = signal('admin/teams/:teamId/players');
+  resourceName = 'player';
 
   readonly players =  computed(() => this.state().data);
 

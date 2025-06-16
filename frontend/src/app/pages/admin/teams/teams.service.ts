@@ -7,6 +7,7 @@ import { DataService } from '../data.service';
 })
 export class TeamsService extends DataService<Team, CreateTeamData, UpdateTeamData> {
   path = signal('admin/teams');
+  resourceName = 'team';
 
   readonly teams =  computed(() => this.state().data);
 }
