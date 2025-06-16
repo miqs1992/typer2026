@@ -1,5 +1,5 @@
 import { Body, Controller, Delete, Get, NotFoundException, Param, Post, Put, UseGuards } from '@nestjs/common';
-import { CreateTeamDto, UpdateTeamDto } from "./teams.dto";
+import { CreateTeamDto, FindOneTeamParams, UpdateTeamDto } from "./teams.dto";
 import { Team } from "./team.entity";
 import { TeamsService } from "./teams.service";
 import { AdminGuard } from "../auth/admin.guard";
@@ -24,7 +24,7 @@ export class AdminTeamsController {
 
   @Delete('/:teamId')
   public async deleteTeam(
-    @Param('teamId') teamId: string,
+    @Param() { teamId }: FindOneTeamParams,
   ): Promise<void> {
     await this.checkTeamExists(teamId);
 
@@ -33,14 +33,14 @@ export class AdminTeamsController {
 
   @Get('/:teamId')
   public async getTeamById(
-    @Param('teamId') teamId: string,
+    @Param() { teamId }: FindOneTeamParams,
   ): Promise<Team> {
     return this.checkTeamExists(teamId);
   }
 
   @Put('/:teamId')
   public async updateTeam(
-    @Param('teamId') teamId: string,
+    @Param() { teamId }: FindOneTeamParams,
     @Body() data: UpdateTeamDto,
   ): Promise<Team> {
     await this.checkTeamExists(teamId);

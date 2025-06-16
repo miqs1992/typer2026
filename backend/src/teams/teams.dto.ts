@@ -1,19 +1,46 @@
-export interface CreatePlayerDto {
+import { IsBoolean, IsNotEmpty, IsString, IsUUID, Length, IsInt, Min } from "class-validator";
+
+export class CreatePlayerDto {
+  @IsNotEmpty()
+  @IsString()
   name: string;
-  teamId: string;
 }
 
-export interface CreateTeamDto {
+export class CreateTeamDto {
+  @IsNotEmpty()
+  @IsString()
   name: string;
+
+  @IsNotEmpty()
+  @IsString()
+  @Length(2, 6)
   flag: string;
 }
 
-export interface UpdateTeamDto extends CreateTeamDto {
+export class UpdateTeamDto extends CreateTeamDto {
+  @IsBoolean()
   winner: boolean;
 }
 
-export interface UpdatePlayerDto extends CreatePlayerDto {
+export class UpdatePlayerDto extends CreatePlayerDto {
+  @IsInt()
+  @Min(0)
   goals: number;
+
+  @IsInt()
+  @Min(0)
   assists: number;
+
+  @IsBoolean()
   king: boolean;
+}
+
+export class FindOneTeamParams {
+  @IsUUID()
+  teamId: string;
+}
+
+export class FindOnePlayerParams extends FindOneTeamParams {
+  @IsUUID()
+  playerId: string;
 }

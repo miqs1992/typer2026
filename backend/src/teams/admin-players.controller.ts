@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Get, NotFoundException, Param, Post, Put, UseGuards } from "@nestjs/common";
 import { AdminGuard } from "../auth/admin.guard";
 import { PlayersService } from "./players.service";
-import { CreatePlayerDto, UpdatePlayerDto } from "./teams.dto";
+import { CreatePlayerDto, FindOnePlayerParams, FindOneTeamParams, UpdatePlayerDto } from "./teams.dto";
 import { Team } from "./team.entity";
 import { TeamsService } from "./teams.service";
 import { Player } from "./player.entity";
@@ -16,17 +16,17 @@ export class AdminPlayersController {
 
   @Post('/')
   public async createPlayer(
-    @Param('teamId') teamId: string,
-    @Body() data: Omit<CreatePlayerDto, 'teamId'>,
+    @Param() { teamId }: FindOneTeamParams,
+    @Body() data: CreatePlayerDto,
   ) {
     await this.checkTeamExists(teamId);
 
-    return this.playersService.create({ ...data, teamId });
+    return this.playersService.create(teamId, data);
   }
 
   @Get('/')
   public async getPlayersByTeamId(
-    @Param('teamId') teamId: string,
+    @Param() { teamId }: FindOneTeamParams,
   ): Promise<{ items: Player[] }> {
     await this.checkTeamExists(teamId);
 
@@ -34,37 +34,33 @@ export class AdminPlayersController {
     return { items: players };
   }
 
-  @Delete('/:id')
+  @Delete('/:playerId')
   public async deletePlayer(
-    @Param('teamId') teamId: string,
-    @Param('id') id: string,
+    @Param() { teamId, playerId }: FindOnePlayerParams,
   ): Promise<void> {
     await this.checkTeamExists(teamId);
+    await this.checkPlayerExists(playerId)
 
-    await this.checkPlayerExists(id)
-
-    await this.playersService.remove(id);
+    await this.playersService.remove(playerId);
   }
 
-  @Put('/:id')
+  @Put('/:playerId')
   public async updatePlayer(
-    @Param('teamId') teamId: string,
-    @Param('id') id: string,
+    @Param() { teamId, playerId }: FindOnePlayerParams,
     @Body() data: UpdatePlayerDto,
   ): Promise<Player> {
     await this.checkTeamExists(teamId);
-    await this.checkPlayerExists(id);
+    await this.checkPlayerExists(playerId);
 
-    return this.playersService.update(id, { ...data, teamId });
+    return this.playersService.update(playerId, data);
   }
 
-  @Get('/:id')
+  @Get('/:playerId')
   public async getPlayerById(
-    @Param('teamId') teamId: string,
-    @Param('id') id: string,
+    @Param() { teamId, playerId }: FindOnePlayerParams,
   ): Promise<Player> {
     await this.checkTeamExists(teamId);
-    return this.checkPlayerExists(id);
+    return this.checkPlayerExists(playerId);
   }
 
   private async checkTeamExists(id: string): Promise<Team> {

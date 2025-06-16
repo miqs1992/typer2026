@@ -1,5 +1,5 @@
 import { Body, Controller, Delete, Get, NotFoundException, Param, Post, Put, UseGuards } from '@nestjs/common';
-import { CreateRoundDto } from "./rounds.dto";
+import { CreateRoundDto, FindOneRoundParams } from "./rounds.dto";
 import { Round } from "./round.entity";
 import { RoundsService } from "./rounds.service";
 import { AdminGuard } from "../auth/admin.guard";
@@ -24,14 +24,14 @@ export class AdminRoundsController {
 
   @Get('/:id')
   public async getRoundById(
-    @Param('id') id: string,
+    @Param() { id }: FindOneRoundParams,
   ): Promise<Round> {
     return this.checkRoundExists(id);
   }
 
   @Delete('/:id')
   public async deleteRound(
-    @Param('id') id: string,
+    @Param() { id }: FindOneRoundParams,
   ): Promise<void> {
     await this.checkRoundExists(id);
 
@@ -40,7 +40,7 @@ export class AdminRoundsController {
 
   @Put('/:id')
   public async updateRound(
-    @Param('id') id: string,
+    @Param() { id }: FindOneRoundParams,
     @Body() data: CreateRoundDto,
   ): Promise<Round> {
     await this.checkRoundExists(id);

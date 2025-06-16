@@ -30,9 +30,9 @@ export class PlayersService {
     await this.playersRepository.delete(id);
   }
 
-  async create({teamId, ...rest}: CreatePlayerDto): Promise<Player> {
+  async create(teamId: string, data: CreatePlayerDto): Promise<Player> {
     const player = this.playersRepository.create({
-      ...rest,
+      ...data,
       team: { id: teamId }
     });
     return this.playersRepository.save(player);

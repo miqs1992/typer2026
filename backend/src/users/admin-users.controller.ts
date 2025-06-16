@@ -1,6 +1,6 @@
 import { Body, Controller, Delete, Get, NotFoundException, Param, Post, Put, UseGuards } from '@nestjs/common';
 import { UsersService } from "./users.service";
-import { AdminUserDto, CreateUserDto, UpdateUserDto } from "./user.dto";
+import { AdminUserDto, CreateUserDto, FindOneUserParams, UpdateUserDto } from "./user.dto";
 import { User } from "./user.entity";
 import { AdminGuard } from "../auth/admin.guard";
 
@@ -25,31 +25,31 @@ export class AdminUsersController {
 
   @Get('/:id')
   public async getUserById(
-    @Param('id') id: string,
+    @Param() params: FindOneUserParams,
   ): Promise<AdminUserDto> {
-    const user = await this.checkUserExists(id);
+    const user = await this.checkUserExists(params.id);
 
     return this.mapUserToAdminDto(user);
   }
 
   @Put('/:id')
   public async updateUser(
-    @Param('id') id: string,
+    @Param() params: FindOneUserParams,
     @Body() data: UpdateUserDto,
   ): Promise<AdminUserDto> {
-    await this.checkUserExists(id);
+    await this.checkUserExists(params.id);
 
-    const updatedUser = await this.usersService.update(id, data);
+    const updatedUser = await this.usersService.update(params.id, data);
     return this.mapUserToAdminDto(updatedUser);
   }
 
   @Delete('/:id')
   public async deleteUser(
-    @Param('id') id: string,
+    @Param() params: FindOneUserParams,
   ): Promise<void> {
-    await this.checkUserExists(id);
+    await this.checkUserExists(params.id);
 
-    await this.usersService.remove(id);
+    await this.usersService.remove(params.id);
   }
 
   private mapUserToAdminDto(user: User): AdminUserDto {
