@@ -7,11 +7,12 @@ import { AuthService } from "../auth/auth.service";
 import { UsersService } from "../users/users.service";
 import { RoundsModule } from "../rounds/rounds.module";
 import { RoundsService } from "../rounds/rounds.service";
+import { MatchDaysController } from "./match-days.controller";
 
 @Module({
   imports: [TypeOrmModule.forFeature([MatchDay]), RoundsModule],
   providers: [MatchDaysService, AuthService, UsersService, RoundsService],
-  controllers: [AdminMatchDaysController],
+  controllers: [AdminMatchDaysController, MatchDaysController],
   exports: [MatchDaysService, TypeOrmModule],
 })
 export class MatchDaysModule {}

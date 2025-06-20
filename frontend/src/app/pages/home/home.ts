@@ -7,6 +7,7 @@ import { Card } from './card/card';
 import { DatePipe } from '@angular/common';
 import { TopScorers } from './top-scorers/top-scorers';
 import { Ranking } from '../ranking/ranking';
+import { HomeService } from './home.service';
 
 @Component({
   selector: 'app-home',
@@ -24,9 +25,12 @@ import { Ranking } from '../ranking/ranking';
 })
 export class Home implements OnInit {
   #activatedRoute = inject(ActivatedRoute);
-  currentUser = signal<Profile | null>(null);
-  stopBetTime = signal<Date | null>(new Date());
+  #homeService = inject(HomeService);
   #destroyRef = inject(DestroyRef);
+
+  currentUser = signal<Profile | null>(null);
+  stopBetTime = signal<Date | null>(null);
+
   showAlert = computed(() => Boolean(this.currentUser()) && (
     this.currentUser()!.topScorer === null || this.currentUser()!.winner === null)
   )
@@ -40,8 +44,17 @@ export class Home implements OnInit {
       }
     })
 
+    const stopBetTimeSub = this.#homeService.getNextStopBetTime().subscribe(time => {
+      if (time) {
+        this.stopBetTime.set(new Date(time));
+      } else {
+        this.stopBetTime.set(null);
+      }
+    })
+
     this.#destroyRef.onDestroy(() => {
       userSub.unsubscribe();
+      stopBetTimeSub.unsubscribe();
     })
   }
 }
