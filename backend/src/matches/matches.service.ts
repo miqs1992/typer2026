@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from "@nestjs/typeorm";
 import { FindOptionsWhere, Repository } from "typeorm";
 import { Match } from "./match.entity";
@@ -6,6 +6,8 @@ import { CreateMatchDto, UpdateMatchDto } from "./matches.dto";
 
 @Injectable()
 export class MatchesService {
+  private readonly logger = new Logger(MatchesService.name);
+
   constructor(
     @InjectRepository(Match)
     private matchesRepository: Repository<Match>,
@@ -44,14 +46,24 @@ export class MatchesService {
     }
 
     // Create updated match object with relation references
-    const updatedMatch = {
+    const updatedMatch = this.matchesRepository.create({
       ...match,
       firstTeamResult: matchData.firstTeamResult,
       secondTeamResult: matchData.secondTeamResult,
       startsAt: matchData.startsAt,
       firstTeam: { id: matchData.firstTeamId },
       secondTeam: { id: matchData.secondTeamId },
-    };
+    });
+
+    // Log the final update object
+    this.logger.log('Updated match object:', {
+      id: updatedMatch.id,
+      firstTeamId: updatedMatch.firstTeam?.id,
+      secondTeamId: updatedMatch.secondTeam?.id,
+      firstTeamResult: updatedMatch.firstTeamResult,
+      secondTeamResult: updatedMatch.secondTeamResult,
+      startsAt: updatedMatch.startsAt
+    });
 
     return this.matchesRepository.save(updatedMatch);
   }

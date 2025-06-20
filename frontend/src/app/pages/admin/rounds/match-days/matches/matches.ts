@@ -49,7 +49,7 @@ export class Matches implements OnInit {
   readonly isLoading = this.#matchesService.isLoading;
   readonly error = this.#matchesService.error;
 
-  displayedColumns = ['firstTeam', 'secondTeam', 'startsAt', 'actions'];
+  displayedColumns = ['firstTeam', 'secondTeam', 'score' , 'startsAt', 'actions'];
 
   ngOnInit(): void {
     this.#matchesService.setMatchDay(this.matchDayId());

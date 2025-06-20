@@ -1,4 +1,4 @@
-import { Controller, Get, Query, UseGuards } from '@nestjs/common';
+import { Controller, Get, NotFoundException, Param, Query, UseGuards } from '@nestjs/common';
 import { PublicTeamDto } from "./teams.dto";
 import { TeamsService } from "./teams.service";
 import { ILike } from "typeorm";
@@ -21,6 +21,21 @@ export class TeamsController {
         name: team.name,
         flag: team.flag,
       }))
+    };
+  }
+
+  @Get('/:id')
+  public async getTeamById(@Param('id') id: string): Promise<PublicTeamDto> {
+    const team = await this.teamsService.findOne(id);
+
+    if (!team) {
+      throw new NotFoundException('Team not found');
+    }
+
+    return {
+      id: team.id,
+      name: team.name,
+      flag: team.flag,
     };
   }
 }

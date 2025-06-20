@@ -16,6 +16,7 @@ import { NewMatchDay } from './rounds/match-days/new-match-day/new-match-day';
 import { EditMatchDay } from './rounds/match-days/edit-match-day/edit-match-day';
 import { Matches } from './rounds/match-days/matches/matches';
 import { NewMatch } from './rounds/match-days/matches/new-match/new-match';
+import { EditMatch } from './rounds/match-days/matches/edit-match/edit-match';
 
 export const routes: Routes = [
   {
@@ -50,6 +51,7 @@ export const routes: Routes = [
           { path: 'edit', component: EditMatchDay },
           { path: 'matches', component: Matches },
           { path: 'matches/new', component: NewMatch },
+          { path: 'matches/:matchId/edit', component: EditMatch },
         ]}
       ]},
     ]

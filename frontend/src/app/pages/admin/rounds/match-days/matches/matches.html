@@ -25,6 +25,13 @@
       </td>
     </ng-container>
 
+    <ng-container matColumnDef="score">
+      <th mat-header-cell *matHeaderCellDef> Score </th>
+      <td mat-cell *matCellDef="let element" class="score-cell">
+        {{element.firstTeamResult !== null ? element.firstTeamResult : '-'}} - {{element.secondTeamResult !== null ? element.secondTeamResult : '-'}}
+      </td>
+    </ng-container>
+
     <ng-container matColumnDef="startsAt">
       <th mat-header-cell *matHeaderCellDef> Start Time </th>
       <td mat-cell *matCellDef="let element">

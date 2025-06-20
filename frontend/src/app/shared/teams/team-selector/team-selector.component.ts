@@ -2,7 +2,7 @@ import { Component, computed, DestroyRef, inject, input, OnInit, signal } from '
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { PublicTeam, PublicTeamsState } from '../public-team.model';
-import { catchError, debounceTime, distinctUntilChanged, finalize, map, Subject } from 'rxjs';
+import { catchError, debounceTime, distinctUntilChanged, finalize, map, of, Subject, tap } from 'rxjs';
 import { NgOptionComponent, NgSelectComponent, } from '@ng-select/ng-select';
 import { CommonModule } from '@angular/common';
 import { FlagIcon } from '../../flag-icon/flag-icon';
@@ -42,19 +42,53 @@ export class TeamSelectorComponent implements OnInit {
   control = input.required<FormControl<string | null>>();
 
   ngOnInit(): void {
-    const subscription = this.#searchSubject.asObservable().pipe(
+    const searchSubscription = this.#searchSubject.asObservable().pipe(
       debounceTime(300),
       distinctUntilChanged()
     ).subscribe(term => {
       this.loadTeams({ search: term });
     });
 
-    // Initial load
+    const valueSubscription = this.control().valueChanges.pipe(
+      tap(value => {
+        if (value) {
+          if (!this.teams().some(team => team.id === value)) {
+            this.loadTeamById(value);
+          }
+        }
+      })
+    ).subscribe();
+
     this.loadTeams();
 
     this.#destroyRef.onDestroy(() => {
-      subscription.unsubscribe();
+      searchSubscription.unsubscribe();
+      valueSubscription.unsubscribe();
     });
+  }
+
+  loadTeamById(teamId: string): void {
+    this.#httpClient
+      .get<PublicTeam>(`teams/${teamId}`)
+      .pipe(
+        tap(team => {
+          // Add this team to the list if not already present
+          this.#state.update(state => {
+            if (!state.teams.some(t => t.id === team.id)) {
+              return {
+                ...state,
+                teams: [...state.teams, team]
+              };
+            }
+            return state;
+          });
+        }),
+        catchError(error => {
+          console.error('Error loading team by ID:', error);
+          return of(null);
+        })
+      )
+      .subscribe();
   }
 
   loadTeams(searchParams?: HttpGetParamsOptions): void {
@@ -98,5 +132,3 @@ export class TeamSelectorComponent implements OnInit {
     }));
   }
 }
-
-
