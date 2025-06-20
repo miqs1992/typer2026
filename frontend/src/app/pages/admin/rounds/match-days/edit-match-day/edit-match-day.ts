@@ -10,6 +10,7 @@ import { MatchDaysService } from '../match-days.service';
 import { Router } from '@angular/router';
 import { initMatchDayForm } from '../match-day.form';
 import { MatchDay } from '../match-days.model';
+import { combineDateTime } from '../../../../../shared/dates/combine-date-time';
 
 @Component({
   selector: 'app-edit-match-day',
@@ -64,19 +65,9 @@ export class EditMatchDay implements OnInit {
   onSubmit() {
     this.#matchDaysService.setRound(this.roundId());
 
-    const stopBetDate = this.form.value.stopBetDate!;
-    const stopBetTime = this.form.value.stopBetTime!;
-    const realStopBetTime = new Date(
-      stopBetDate.getFullYear(),
-      stopBetDate.getMonth(),
-      stopBetDate.getDate(),
-      stopBetTime.getHours(),
-      stopBetTime.getMinutes(),
-    );
-
     const sub = this.#matchDaysService.updateResource(this.matchDayId(), {
       dayNumber: this.form.value.dayNumber!,
-      stopBetTime: realStopBetTime,
+      stopBetTime: combineDateTime(this.form.value.stopBetDate!, this.form.value.stopBetTime!),
     }).subscribe({
       next: () => {
         this.#router.navigate(['admin/rounds', this.roundId(), 'match-days'], { replaceUrl: true });

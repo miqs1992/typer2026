@@ -1,0 +1,25 @@
+<h3>Add new match</h3>
+<app-admin-form-wrapper
+  [formGroup]="form"
+  submitText="Create new match"
+  [isSubmitDisabled]="form.invalid || form.pristine"
+  (formSubmit)="onSubmit()"
+  cancelLink=".."
+>
+  <app-team-selector
+    [control]="form.controls.firstTeamId"
+    placeholder="First team*"
+  />
+
+  <app-team-selector
+    [control]="form.controls.secondTeamId"
+    placeholder="Second team*"
+  />
+
+  <mat-form-field>
+    <mat-label>Choose start time</mat-label>
+    <input matInput [matTimepicker]="timepicker" formControlName="startsAtTime">
+    <mat-timepicker-toggle matIconSuffix [for]="timepicker"/>
+    <mat-timepicker #timepicker/>
+  </mat-form-field>
+</app-admin-form-wrapper>

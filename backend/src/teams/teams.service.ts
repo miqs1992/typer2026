@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { FindOneOptions, Repository } from 'typeorm';
 import { Team } from "./team.entity";
 import { CreateTeamDto, UpdateTeamDto } from "./teams.dto";
 
@@ -11,8 +11,12 @@ export class TeamsService {
     private teamsRepository: Repository<Team>,
   ) {}
 
-  findAll(): Promise<Team[]> {
-    return this.teamsRepository.find({order: { name: 'ASC' }});
+  findAll(whereClause?: FindOneOptions<Team>['where'], limit?: number): Promise<Team[]> {
+    return this.teamsRepository.find({
+      order: { name: 'ASC' },
+      where: whereClause,
+      take: limit,
+    });
   }
 
   findOne(id: string): Promise<Team | null> {

@@ -14,6 +14,8 @@ import { EditRound } from './rounds/edit-round/edit-round';
 import { MatchDays } from './rounds/match-days/match-days';
 import { NewMatchDay } from './rounds/match-days/new-match-day/new-match-day';
 import { EditMatchDay } from './rounds/match-days/edit-match-day/edit-match-day';
+import { Matches } from './rounds/match-days/matches/matches';
+import { NewMatch } from './rounds/match-days/matches/new-match/new-match';
 
 export const routes: Routes = [
   {
@@ -41,9 +43,15 @@ export const routes: Routes = [
       { path: '', component: Rounds },
       { path: 'new', component: NewRound },
       { path: ':roundId/edit', component: EditRound },
-      { path: ':roundId/match-days', component: MatchDays },
-      { path: ':roundId/match-days/new', component: NewMatchDay },
-      { path: ':roundId/match-days/:matchDayId/edit', component: EditMatchDay },
+      { path: ':roundId/match-days', children: [
+        { path: '', component: MatchDays },
+        { path: 'new', component: NewMatchDay },
+        { path: ':matchDayId', children: [
+          { path: 'edit', component: EditMatchDay },
+          { path: 'matches', component: Matches },
+          { path: 'matches/new', component: NewMatch },
+        ]}
+      ]},
     ]
   }
 ];

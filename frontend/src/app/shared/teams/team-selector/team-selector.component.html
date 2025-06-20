@@ -1,0 +1,17 @@
+<ng-select
+  [formControl]="this.control()"
+  [loading]="isLoading()"
+  (search)="searchTeams($event)"
+  (clear)="onClear()"
+  [placeholder]="placeholder() || 'Select team'"
+>
+  @for (team of teams(); track team.id) {
+    <ng-option [value]="team.id">
+      <app-flag-icon [country]="team.flag" />
+      {{team.name}}
+    </ng-option>
+  }
+</ng-select>
+
+
+

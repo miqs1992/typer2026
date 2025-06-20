@@ -1,4 +1,5 @@
 import { IsBoolean, IsNotEmpty, IsString, IsUUID, Length, IsInt, Min } from "class-validator";
+import { Team } from "./team.entity";
 
 export class CreatePlayerDto {
   @IsNotEmpty()
@@ -44,3 +45,5 @@ export class FindOnePlayerParams extends FindOneTeamParams {
   @IsUUID()
   playerId: string;
 }
+
+export type PublicTeamDto = Pick<Team, 'name' | 'flag' | 'id'>;

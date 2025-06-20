@@ -2,6 +2,7 @@
 @use '@angular/material' as mat;
 @include mat.core();
 @import '@angular/material/prebuilt-themes/azure-blue.css';
+@import "@ng-select/ng-select/themes/material.theme.css";
 
 html, body {
   height: 100%;
@@ -21,3 +22,10 @@ $my-theme: mat.define-theme((
 html {
   @include mat.all-component-themes($my-theme);
 }
+
+.ng-select-container {
+  background-color: rgb(224, 226, 236);
+  padding-left: 16px;
+  padding-top: 8px;
+}
+

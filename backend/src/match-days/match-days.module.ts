@@ -11,6 +11,7 @@ import { RoundsService } from "../rounds/rounds.service";
 @Module({
   imports: [TypeOrmModule.forFeature([MatchDay]), RoundsModule],
   providers: [MatchDaysService, AuthService, UsersService, RoundsService],
-  controllers: [AdminMatchDaysController]
+  controllers: [AdminMatchDaysController],
+  exports: [MatchDaysService, TypeOrmModule],
 })
 export class MatchDaysModule {}
