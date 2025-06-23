@@ -3,8 +3,10 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FindOptionsOrder, Repository } from 'typeorm';
 import { User } from './user.entity';
-import { CreateUserDto, UpdateUserDto } from "./user.dto";
+import { CreateUserDto, UpdateMeDto, UpdateUserDto } from "./user.dto";
 import * as bcrypt from 'bcrypt';
+import { Team } from "../teams/team.entity";
+import { Player } from "../teams/player.entity";
 
 @Injectable()
 export class UsersService {
@@ -41,18 +43,29 @@ export class UsersService {
     return this.usersRepository.save(user);
   }
 
-  async update(id: string, { password, passwordConfirmation, ...rest } : UpdateUserDto): Promise<User> {
+  async update(id: string, { password, passwordConfirmation, ...rest } : UpdateUserDto | UpdateMeDto): Promise<User> {
     const user = await this.findOne(id);
     if (!user) {
       throw new Error('User not found');
     }
 
-    const updateData: Partial<User> = rest;
+    const updatedUser = this.usersRepository.create({
+      ...user,
+      ...rest,
+    })
     if (password && passwordConfirmation) {
-      updateData.encryptedPassword = await this.validateAndEncryptPassword(password, passwordConfirmation);
+      updatedUser.encryptedPassword = await this.validateAndEncryptPassword(password, passwordConfirmation);
     }
 
-    return this.usersRepository.save({ ...user, ...updateData });
+    if (rest['winnerId']) {
+      updatedUser.winner = { id: rest['winnerId'] } as Team;
+    }
+
+    if (rest['topScorerId']) {
+      updatedUser.topScorer = { id: rest['topScorerId'] } as Player;
+    }
+
+    return this.usersRepository.save(updatedUser);
   }
 
   private async validateAndEncryptPassword(password: string, passwordConfirmation: string): Promise<string> {

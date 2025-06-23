@@ -1,9 +1,9 @@
-import { Controller, Get, NotFoundException, Query, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, NotFoundException, Patch, Query, Req, UseGuards } from '@nestjs/common';
 import { UsersService } from "./users.service";
 import { User } from "./user.entity";
 import { AuthGuard } from 'src/auth/auth.guard';
 import { AuthenticatedRequest } from 'src/auth/auth.types';
-import { RankingUserDto } from "./user.dto";
+import { RankingUserDto, UpdateMeDto } from "./user.dto";
 
 @UseGuards(AuthGuard)
 @Controller('users')
@@ -53,6 +53,19 @@ export class UsersController {
         } : null
       }))
     }
-
   }
+
+  @Patch('/me')
+  public async updateCurrentUser(
+    @Req() req: AuthenticatedRequest,
+    @Body() data: UpdateMeDto,
+  ): Promise<Omit<User, 'encryptedPassword'>> {
+    const user = await this.usersService.update(req.currentUserId, data);
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+    const { encryptedPassword, ...userWithoutPassword } = user;
+    return userWithoutPassword;
+  }
+
 }

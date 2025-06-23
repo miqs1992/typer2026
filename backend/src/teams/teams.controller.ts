@@ -49,6 +49,31 @@ export class TeamsController {
     };
   }
 
+  @Get('/players')
+  public async searchPlayers(
+    @Query('search') search: string | undefined,
+  ): Promise<{ items: PublicPlayerDto[] }> {
+    const players = await this.playersService.findAll(
+      search ? { name: ILike(`%${search}%`) } : undefined,
+      5,
+      { name: 'ASC' }
+    );
+
+    return {
+      items: players.map(player => ({
+        id: player.id,
+        name: player.name,
+        goals: player.goals,
+        assists: player.assists,
+        team: {
+          id: player.team.id,
+          name: player.team.name,
+          flag: player.team.flag,
+        },
+      }))
+    };
+  }
+
   @Get('/:id')
   public async getTeamById(@Param('id') id: string): Promise<PublicTeamDto> {
     const team = await this.teamsService.findOne(id);
@@ -63,5 +88,4 @@ export class TeamsController {
       flag: team.flag,
     };
   }
-
 }

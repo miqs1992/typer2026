@@ -1,6 +1,6 @@
 import { Component, DestroyRef, inject, input, OnInit, signal } from '@angular/core';
 import { Router } from '@angular/router';
-import { UsersService } from '../users.service';
+import { UsersAdminService } from '../users-admin.service';
 import { UpdateUserData, User } from '../users.model';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -26,7 +26,7 @@ import { AdminFormWrapperComponent } from '../../../../shared/admin-form-wrapper
 export class EditUser implements OnInit {
   #router = inject(Router);
   #destroyRef = inject(DestroyRef);
-  #usersService = inject(UsersService);
+  #usersService = inject(UsersAdminService);
 
   userId = input.required<string>();
   editedUser = signal<User | null>(null);

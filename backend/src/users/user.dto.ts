@@ -66,3 +66,24 @@ export type RankingUserDto = Pick<User, 'id' | 'points' | 'exactBetCount' | 'lea
   winner: PublicTeamDto | null;
   topScorer: PublicPlayerDto | null;
 };
+
+export class UpdateMeDto {
+  @IsString()
+  @IsOptional()
+  @Length(8)
+  password?: string;
+
+  @IsString()
+  @IsOptional()
+  @Length(8)
+  passwordConfirmation?: string;
+
+  @IsUUID()
+  @IsOptional()
+  winnerId?: string;
+
+  @IsUUID()
+  @IsOptional()
+  topScorerId?: string;
+}
+

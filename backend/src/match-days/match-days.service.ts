@@ -36,6 +36,17 @@ export class MatchDaysService {
     });
   }
 
+  async findFirstMatchDay(): Promise<MatchDay | null> {
+    const result = await this.matchDaysRepository.find({
+      order: {
+        stopBetTime: 'ASC'
+      },
+      take: 1,
+    })
+
+    return result.length > 0 ? result[0] : null;
+  }
+
   async remove(id: string): Promise<void> {
     await this.matchDaysRepository.delete(id);
   }

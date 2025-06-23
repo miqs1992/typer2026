@@ -5,7 +5,7 @@ import { DataService } from '../data.service';
 @Injectable({
   providedIn: 'root'
 })
-export class UsersService extends DataService<User, CreateUserData, UpdateUserData> {
+export class UsersAdminService extends DataService<User, CreateUserData, UpdateUserData> {
   path = signal('admin/users');
   resourceName = 'user';
 

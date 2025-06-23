@@ -5,10 +5,10 @@
   (clear)="onClear()"
   [placeholder]="placeholder()"
 >
-  @for (team of items(); track team.id) {
-    <ng-option [value]="team.id">
-      <app-flag-icon [country]="team.flag" />
-      {{team.name}}
+  @for (player of items(); track player.id) {
+    <ng-option [value]="player.id">
+      <app-flag-icon [country]="player.team.flag" />
+      {{player.name}}
     </ng-option>
   }
 </ng-select>

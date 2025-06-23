@@ -1,5 +1,5 @@
 import { Component, DestroyRef, inject, OnInit } from '@angular/core';
-import { UsersService } from './users.service';
+import { UsersAdminService } from './users-admin.service';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import {
   MatCell,
@@ -41,7 +41,7 @@ import { RouterLink } from '@angular/router';
 })
 export class Users implements OnInit {
   #onDestroy = inject(DestroyRef);
-  readonly #usersService = inject(UsersService);
+  readonly #usersService = inject(UsersAdminService);
 
   // Computed values
   readonly users = this.#usersService.users;

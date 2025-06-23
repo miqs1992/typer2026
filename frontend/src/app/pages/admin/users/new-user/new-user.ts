@@ -1,7 +1,7 @@
 import { Component, DestroyRef, inject } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatFormField, MatInput } from '@angular/material/input';
-import { UsersService } from '../users.service';
+import { UsersAdminService } from '../users-admin.service';
 import { Router } from '@angular/router';
 import { equalValues } from '../../../../helpers/equal-values.validator';
 import { AdminFormWrapperComponent } from '../../../../shared/admin-form-wrapper/admin-form-wrapper.component';
@@ -20,7 +20,7 @@ import { AdminFormWrapperComponent } from '../../../../shared/admin-form-wrapper
 export class NewUser {
   #router = inject(Router);
   #destroyRef = inject(DestroyRef);
-  #usersService = inject(UsersService);
+  #usersService = inject(UsersAdminService);
 
   form = new FormGroup({
     email: new FormControl('', {

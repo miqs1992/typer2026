@@ -5,6 +5,7 @@ import { Login } from './pages/auth/login/login';
 import { AuthGuard } from './auth/auth.guard';
 import { Ranking } from './pages/ranking/ranking';
 import { CurrentUserResolver } from './auth/auth.resolver';
+import { EditUser } from './pages/users/edit-user/edit-user';
 
 export const routes: Routes = [
   {
@@ -14,6 +15,7 @@ export const routes: Routes = [
       { path: '', component: Home },
       { path: 'rounds', component: Rounds },
       { path: 'ranking', component: Ranking },
+      { path: 'profile', component: EditUser, title: 'Profile' },
       { path: 'admin', loadChildren: () => import('./pages/admin/admin.routes').then(m => m.routes) },
     ], resolve: {
       currentUser: CurrentUserResolver

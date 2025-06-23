@@ -1,0 +1,37 @@
+<h3>My profile</h3>
+<app-admin-form-wrapper
+  [formGroup]="form"
+  submitText="Update"
+  [isSubmitDisabled]="form.invalid || form.pristine"
+  (formSubmit)="onSubmit()"
+  cancelLink="/"
+>
+  @if(isBeforeFirstGame()) {
+    <app-team-selector
+      [control]="form.controls.winnerId"
+      placeholder="Select winner"
+    />
+
+    <app-player-selector
+      [control]="form.controls.topScorerId"
+      placeholder="Second top scorer"
+    />
+  }
+
+
+  <div class="passwords" formGroupName="passwords" style="margin-bottom: 20px; margin-top: 20px;">
+    <mat-form-field>
+      <input matInput placeholder="Password" name="password" formControlName="password" type="password"/>
+    </mat-form-field>
+    <mat-form-field>
+      <input
+        matInput
+        placeholder="Password Confirmation"
+        name="passwordConfirmation"
+        formControlName="passwordConfirmation"
+        type="password"
+      />
+      <mat-hint>Leave password fields empty to keep the current password.</mat-hint>
+    </mat-form-field>
+  </div>
+</app-admin-form-wrapper>
