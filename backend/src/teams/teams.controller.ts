@@ -1,13 +1,17 @@
 import { Controller, Get, NotFoundException, Param, Query, UseGuards } from '@nestjs/common';
-import { PublicTeamDto } from "./teams.dto";
+import { PublicPlayerDto, PublicTeamDto } from "./teams.dto";
 import { TeamsService } from "./teams.service";
 import { ILike } from "typeorm";
 import { AuthGuard } from "../auth/auth.guard";
+import { PlayersService } from "./players.service";
 
 @UseGuards(AuthGuard)
 @Controller('teams')
 export class TeamsController {
-  constructor(private readonly teamsService: TeamsService) {}
+  constructor(
+    private readonly teamsService: TeamsService,
+    private readonly playersService: PlayersService,
+  ) {}
 
   @Get('/')
   public async searchTeams(
@@ -20,6 +24,27 @@ export class TeamsController {
         id: team.id,
         name: team.name,
         flag: team.flag,
+      }))
+    };
+  }
+
+  @Get('/scorers-ranking')
+  public async getTeamsRanking(
+    @Query('limit') limit: number | undefined,
+  ): Promise<{ items: PublicPlayerDto[] }> {
+    const players = await this.playersService.findAll(undefined, limit);
+
+    return {
+      items: players.map(player => ({
+        id: player.id,
+        name: player.name,
+        goals: player.goals,
+        assists: player.assists,
+        team: {
+          id: player.team.id,
+          name: player.team.name,
+          flag: player.team.flag,
+        },
       }))
     };
   }
@@ -38,4 +63,5 @@ export class TeamsController {
       flag: team.flag,
     };
   }
+
 }

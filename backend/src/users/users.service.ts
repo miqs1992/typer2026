@@ -13,8 +13,11 @@ export class UsersService {
     private usersRepository: Repository<User>,
   ) {}
 
-  findAll(order?: FindOptionsOrder<User>): Promise<User[]> {
-    return this.usersRepository.find({ order });
+  findAll(
+    order: FindOptionsOrder<User> = { leagueRank: 'ASC' },
+    limit?: number,
+  ): Promise<User[]> {
+    return this.usersRepository.find({ order, take: limit });
   }
 
   findOne(id: string): Promise<User | null> {

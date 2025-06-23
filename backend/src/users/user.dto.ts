@@ -1,5 +1,7 @@
 import { IsBoolean, IsEmail, IsNotEmpty, IsOptional, IsString, IsUUID, Length } from "class-validator";
 import { PartialType, OmitType } from '@nestjs/mapped-types';
+import { User } from "./user.entity";
+import { PublicPlayerDto, PublicTeamDto } from "../teams/teams.dto";
 
 export class CreateUserDto {
   @IsEmail()
@@ -58,3 +60,9 @@ export class FindOneUserParams {
   @IsUUID()
   id: string;
 }
+
+export type RankingUserDto = Pick<User, 'id' | 'points' | 'exactBetCount' | 'leagueRank'> & {
+  username: string;
+  winner: PublicTeamDto | null;
+  topScorer: PublicPlayerDto | null;
+};

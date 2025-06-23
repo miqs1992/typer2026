@@ -1,18 +1,22 @@
-import { Injectable, signal } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { TopScorer } from './top-scorers.model';
-import { delay, of, tap } from 'rxjs';
-import { topScorersMock } from './top-scorers.mock';
+import { map } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TopScorersService {
-  #topScorers = signal<TopScorer[]>([]);
-  loadedTopScorers = this.#topScorers.asReadonly();
+  #httpClient = inject(HttpClient);
 
-  loadTopScorers() {
-    return of(topScorersMock).pipe(delay(1000)).pipe(
-      tap(data => this.#topScorers.set(data))
-    );
+  getRanking(limit?: number) {
+    const params = limit ? { limit: limit.toString() } : undefined;
+
+    return this.#httpClient.get<{ items: TopScorer[] }>(
+      'teams/scorers-ranking',
+      { params }
+    ).pipe(
+      map((data) => data.items),
+    )
   }
 }

@@ -10,6 +10,7 @@ import {
   MatHeaderRowDef, MatRow, MatRowDef, MatTable
 } from '@angular/material/table';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { TopScorer } from './top-scorers.model';
 
 @Component({
   selector: 'app-top-scorers',
@@ -32,7 +33,7 @@ import { MatProgressSpinner } from '@angular/material/progress-spinner';
 })
 export class TopScorers implements OnInit {
   #topScorersService = inject(TopScorersService);
-  topScorers = this.#topScorersService.loadedTopScorers;
+  topScorers = signal<TopScorer[]>([]);
   isFetching = signal(false)
   error = signal<string | null>(null);
   #destroyRef = inject(DestroyRef);
@@ -41,8 +42,12 @@ export class TopScorers implements OnInit {
   ngOnInit() {
     this.isFetching.set(true);
     this.error.set('');
-    const sub = this.#topScorersService.loadTopScorers()
+    const sub = this.#topScorersService.getRanking(5)
       .subscribe({
+        next: (data: TopScorer[]) => {
+          this.topScorers.set(data);
+          this.error.set(null);
+        },
         complete: () => {
           this.isFetching.set(false);
         },

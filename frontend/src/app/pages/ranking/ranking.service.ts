@@ -1,18 +1,22 @@
-import { Injectable, signal } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { RankedUserData } from './ranking.model';
-import { rankingDataMock } from './ranking-data.mock';
-import { of, delay, tap } from 'rxjs';
+import { map } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RankingService {
-  #ranking = signal<RankedUserData[]>([]);
-  loadedRanking = this.#ranking.asReadonly();
+  #httpClient = inject(HttpClient);
 
-  loadFullRanking() {
-   return of(rankingDataMock).pipe(delay(1000)).pipe(
-     tap(data => this.#ranking.set(data))
-   );
+  getRanking(limit?: number) {
+    const params = limit ? { limit: limit.toString() } : undefined;
+
+    return this.#httpClient.get<{ items: RankedUserData[] }>(
+      'users/ranking',
+      { params }
+    ).pipe(
+      map((data) => data.items),
+    )
   }
 }

@@ -38,3 +38,8 @@ Content-Type: application/json
   "scoreFactor": 1.0,
   "stage": "GROUP"
 }
+
+###
+GET http://localhost:3000/users/ranking
+Content-Type: application/json
+Authorization: Bearer {{backendToken}}

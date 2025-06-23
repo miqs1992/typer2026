@@ -13,6 +13,7 @@ import {
 import { FlagIcon } from '../../shared/flag-icon/flag-icon';
 import { Profile } from '../../auth/auth.model';
 import { ActivatedRoute } from '@angular/router';
+import { RankedUserData } from './ranking.model';
 
 @Component({
   selector: 'app-ranking',
@@ -39,7 +40,7 @@ export class Ranking implements OnInit {
   #destroyRef = inject(DestroyRef);
 
   currentUser = signal<Profile | null>(null);
-  ranking = this.#rankingService.loadedRanking;
+  ranking = signal<RankedUserData[]>([]);
   isFetching = signal(false)
   error = signal<string | null>(null);
 
@@ -49,8 +50,12 @@ export class Ranking implements OnInit {
   ngOnInit() {
     this.isFetching.set(true);
     this.error.set('');
-    const sub = this.#rankingService.loadFullRanking()
+    const sub = this.#rankingService.getRanking(this.isCompact() ? 5 : undefined)
       .subscribe({
+        next: (data: RankedUserData[]) => {
+          this.ranking.set(data);
+          this.error.set(null);
+        },
         complete: () => {
           this.isFetching.set(false);
         },
