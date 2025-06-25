@@ -1,9 +1,9 @@
 services:
   - type: web
     name: backend
-    env: node
+    runtime: node
     repo: https://github.com/miqs1992/typer2026
-    plan: free
+    plan: starter
     buildCommand: cd backend && npm install && npm run build
     startCommand: cd backend && npm run start:prod
     envVars:
@@ -16,9 +16,8 @@ services:
 
   - type: web
     name: frontend
-    env: static
+    runtime: static
     repo: https://github.com/miqs1992/typer2026
-    plan: free
     buildCommand: cd frontend && npm install && npm run build
     staticPublishPath: frontend/dist/frontend
     routes:
