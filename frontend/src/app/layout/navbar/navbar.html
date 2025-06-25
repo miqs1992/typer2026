@@ -3,7 +3,7 @@
     <img ngSrc="ball.png" alt="Euro Typer Logo" width="30" height="30" />
     <span>Typer 2026</span>
     <span class="example-spacer"></span>
-    @if(isLoggedIn()) {
+    @if(currentUser(); as user) {
       <a matIconButton routerLink="/">
         <mat-icon>home</mat-icon>
       </a>
@@ -12,7 +12,7 @@
       </a>
       <a matButton routerLink="/ranking">Ranking</a>
       <a matButton routerLink="/rounds">Rounds</a>
-      @if(currentUser()?.isAdmin) {
+      @if(user.isAdmin) {
         <button matButton [matMenuTriggerFor]="admin">Admin</button>
         <mat-menu #admin="matMenu">
           <a mat-menu-item routerLink="/admin/users">Users</a>
@@ -24,7 +24,7 @@
         <mat-icon>logout</mat-icon>
       </button>
     } @else {
-      <a matButton routerLink="/login">Login</a>
+      <a matButton (click)="login()">Login</a>
     }
   </app-container>
 </mat-toolbar>

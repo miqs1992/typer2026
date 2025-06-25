@@ -1,9 +1,9 @@
 import { Controller, Get, NotFoundException, UseGuards } from '@nestjs/common';
 import { PublicMatchDay } from "./match-days.dto";
 import { MatchDaysService } from "./match-days.service";
-import { AuthGuard } from "../auth/auth.guard";
+import { ClerkAuthGuard } from "../auth/clerk-auth.guard";
 
-@UseGuards(AuthGuard)
+@UseGuards(ClerkAuthGuard)
 @Controller('match-days')
 export class MatchDaysController {
   constructor(

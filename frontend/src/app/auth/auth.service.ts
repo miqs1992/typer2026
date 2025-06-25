@@ -1,68 +1,81 @@
-import { computed, inject, Injectable, signal } from '@angular/core';
-import { StorageService } from '../core/services/storage/storage.service';
-import { StorageKey } from '../core/services/storage/storage.model';
-import { Profile, SignInResponse } from './auth.model';
+import { inject, Injectable, signal } from '@angular/core';
+import { Profile } from './auth.model';
 import { currentUserMock } from './auth.mock';
-import { catchError, map, tap } from 'rxjs';
+import { catchError, map, of } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { Router } from '@angular/router';
+import { Clerk } from '@clerk/clerk-js';
+import { toObservable } from '@angular/core/rxjs-interop';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  #token = signal<string>('');
-  #storage = inject(StorageService);
   #httpClient = inject(HttpClient);
-  #router = inject(Router);
-  isLoggedIn = computed(() => this.#token().length > 0);
+
+  #isLoading = signal(true);
+  #clerk = signal<Clerk | null>(null);
   #currentUser = signal<Profile | null>(null);
+
+  isLoading$ = toObservable(this.#isLoading);
   loadedCurrentUser = this.#currentUser.asReadonly();
 
   constructor() {
-    const token = this.#storage.read(StorageKey.AUTH_TOKEN);
-    console.log('AuthService initialized, token:', token);
-    if (token) {
-      this.#token.set(token);
+    this.init()
+  }
+
+  private async init() {
+    if(!this.#isLoading()) {
+      console.warn('AuthService is already initialized.');
+      return;
+    }
+
+    const instance = new Clerk(environment.clerkPublicKey)
+    await instance.load({});
+    this.#clerk.set(instance);
+    if(instance.session) {
+      console.info('Session found, loading current user.');
+      this.loadCurrentUser().subscribe();
+    } else {
+      console.warn('No session found, redirecting to login.');
+      this.#isLoading.set(false);
     }
   }
 
-  public login(email: string, password: string) {
-    return this.#httpClient.post<SignInResponse>('auth/login', { email, password })
-      .pipe(tap(res => {
-        this.#token.set(res.access_token);
-        this.#storage.save(StorageKey.AUTH_TOKEN, res.access_token);
-      }))
-  }
-
-  public getToken() {
-    return this.#token.asReadonly();
+  public redirectToLogin() {
+    return this.#clerk()!.redirectToSignIn();
   }
 
   public logout() {
-    this.#token.set('');
-    this.#storage.remove(StorageKey.AUTH_TOKEN);
     this.#currentUser.set(null);
+    return this.#clerk()!.signOut();
+  }
+
+  public async getToken() {
+    const session = this.#clerk()!.session;
+    if (!session) {
+      return null;
+    }
+
+    return session.getToken();
   }
 
   public loadCurrentUser() {
-    if(!this.isLoggedIn()) {
-      throw new Error('User is not logged in');
+    if (this.#currentUser()) {
+      return of(this.#currentUser()!);
     }
 
-    if (this.#currentUser()) {
-      return this.#currentUser()!;
-    }
+    console.log('Loading current user from API...');
 
     return this.#httpClient.get<Profile>('users/me').pipe(
       map(fetchedUserData => {
         const fullProfile = { ...currentUserMock, ...fetchedUserData };
         this.#currentUser.set(fullProfile);
+        this.#isLoading.set(false);
         return fullProfile;
       }),
       catchError((err) => {
         this.logout();
-        this.#router.navigate(['/auth/login']);
         throw new Error('Failed to load current user: ' + err.message);
       })
     )

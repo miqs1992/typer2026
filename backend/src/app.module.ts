@@ -17,6 +17,7 @@ import { TeamsModule } from './teams/teams.module';
 import { Team } from "./teams/team.entity";
 import { Match } from "./matches/match.entity";
 import { Player } from "./teams/player.entity";
+import { ClerkClientProvider } from "./providers/clerk-client.provider";
 
 @Module({
   imports: [
@@ -53,6 +54,6 @@ import { Player } from "./teams/player.entity";
     TeamsModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, ClerkClientProvider],
 })
 export class AppModule {}

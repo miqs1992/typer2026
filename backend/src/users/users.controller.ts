@@ -1,25 +1,25 @@
-import { Body, Controller, Get, NotFoundException, Patch, Query, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, NotFoundException, Patch, Query, UseGuards } from '@nestjs/common';
 import { UsersService } from "./users.service";
 import { User } from "./user.entity";
-import { AuthGuard } from 'src/auth/auth.guard';
-import { AuthenticatedRequest } from 'src/auth/auth.types';
+import { AuthenticatedUser } from 'src/auth/auth.types';
 import { RankingUserDto, UpdateMeDto } from "./user.dto";
+import { ClerkAuthGuard } from "../auth/clerk-auth.guard";
+import { CurrentUser } from "../decorators/current-user.decorator";
 
-@UseGuards(AuthGuard)
+@UseGuards(ClerkAuthGuard)
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Get('/me')
   public async getCurrentUser(
-    @Req() req: AuthenticatedRequest,
-  ): Promise<Omit<User, 'encryptedPassword'>> {
-    const user = await this.usersService.findOne(req.currentUserId);
+    @CurrentUser() currentUser: AuthenticatedUser,
+  ): Promise<User> {
+    const user = await this.usersService.findOne(currentUser.id);
     if (!user) {
       throw new NotFoundException('User not found');
     }
-    const { encryptedPassword, ...userWithoutPassword } = user;
-    return userWithoutPassword;
+    return user;
   }
 
   @Get('/ranking')
@@ -57,15 +57,14 @@ export class UsersController {
 
   @Patch('/me')
   public async updateCurrentUser(
-    @Req() req: AuthenticatedRequest,
+    @CurrentUser() currentUser: AuthenticatedUser,
     @Body() data: UpdateMeDto,
-  ): Promise<Omit<User, 'encryptedPassword'>> {
-    const user = await this.usersService.update(req.currentUserId, data);
+  ): Promise<User> {
+    const user = await this.usersService.update(currentUser.id, data);
     if (!user) {
       throw new NotFoundException('User not found');
     }
-    const { encryptedPassword, ...userWithoutPassword } = user;
-    return userWithoutPassword;
+    return user;
   }
 
 }

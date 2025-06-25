@@ -14,8 +14,8 @@ export class User extends BaseResource {
   @Column({ unique: true })
   email: string;
 
-  @Column()
-  encryptedPassword: string;
+  @Column({ unique: true, select: false })
+  clerkId: string;
 
   @Column({ default: false })
   isAdmin: boolean;

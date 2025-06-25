@@ -4,7 +4,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { FindOptionsOrder, Repository } from 'typeorm';
 import { User } from './user.entity';
 import { CreateUserDto, UpdateMeDto, UpdateUserDto } from "./user.dto";
-import * as bcrypt from 'bcrypt';
 import { Team } from "../teams/team.entity";
 import { Player } from "../teams/player.entity";
 
@@ -30,20 +29,20 @@ export class UsersService {
     return this.usersRepository.findOneBy({ email });
   }
 
+  findByClerkId(clerkId: string): Promise<User | null> {
+    return this.usersRepository.findOneBy({ clerkId });
+  }
+
   async remove(id: string): Promise<void> {
     await this.usersRepository.delete(id);
   }
 
-  async create({ password, passwordConfirmation, ...rest }: CreateUserDto): Promise<User> {
-    const encryptedPassword = await this.validateAndEncryptPassword(password, passwordConfirmation);
-    const user = this.usersRepository.create({
-      ...rest,
-      encryptedPassword,
-    });
+  async create(data: CreateUserDto): Promise<User> {
+    const user = this.usersRepository.create(data);
     return this.usersRepository.save(user);
   }
 
-  async update(id: string, { password, passwordConfirmation, ...rest } : UpdateUserDto | UpdateMeDto): Promise<User> {
+  async update(id: string, data : UpdateUserDto | UpdateMeDto): Promise<User> {
     const user = await this.findOne(id);
     if (!user) {
       throw new Error('User not found');
@@ -51,32 +50,17 @@ export class UsersService {
 
     const updatedUser = this.usersRepository.create({
       ...user,
-      ...rest,
+      ...data,
     })
-    if (password && passwordConfirmation) {
-      updatedUser.encryptedPassword = await this.validateAndEncryptPassword(password, passwordConfirmation);
+
+    if (data['winnerId']) {
+      updatedUser.winner = { id: data['winnerId'] } as Team;
     }
 
-    if (rest['winnerId']) {
-      updatedUser.winner = { id: rest['winnerId'] } as Team;
-    }
-
-    if (rest['topScorerId']) {
-      updatedUser.topScorer = { id: rest['topScorerId'] } as Player;
+    if (data['topScorerId']) {
+      updatedUser.topScorer = { id: data['topScorerId'] } as Player;
     }
 
     return this.usersRepository.save(updatedUser);
-  }
-
-  private async validateAndEncryptPassword(password: string, passwordConfirmation: string): Promise<string> {
-    if(password.length < 8) {
-      throw new Error('Password must be at least 8 characters long');
-    }
-
-    if (password !== passwordConfirmation) {
-      throw new Error('Password and password confirmation do not match');
-    }
-
-    return bcrypt.hash(password, 10);
   }
 }

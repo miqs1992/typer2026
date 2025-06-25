@@ -2,10 +2,10 @@ import { Controller, Get, NotFoundException, Param, Query, UseGuards } from '@ne
 import { PublicPlayerDto, PublicTeamDto } from "./teams.dto";
 import { TeamsService } from "./teams.service";
 import { ILike } from "typeorm";
-import { AuthGuard } from "../auth/auth.guard";
+import { ClerkAuthGuard } from "../auth/clerk-auth.guard";
 import { PlayersService } from "./players.service";
 
-@UseGuards(AuthGuard)
+@UseGuards(ClerkAuthGuard)
 @Controller('teams')
 export class TeamsController {
   constructor(

@@ -1,11 +1,11 @@
-import { AdminGuard } from "../auth/admin.guard";
 import { Body, Controller, Delete, Get, NotFoundException, Param, Post, Put, UseGuards } from '@nestjs/common';
 import { CreateMatchDayDto, FindOneMatchDayParams, FindRoundParams } from "./match-days.dto";
 import { MatchDay } from "./match-day.entity";
 import { MatchDaysService } from "./match-days.service";
 import { RoundsService } from "../rounds/rounds.service";
+import { ClerkAdminAuthGuard } from "../auth/clerk-admin-auth.guard";
 
-@UseGuards(AdminGuard)
+@UseGuards(ClerkAdminAuthGuard)
 @Controller('admin/rounds/:roundId/match-days')
 export class AdminMatchDaysController {
   constructor(

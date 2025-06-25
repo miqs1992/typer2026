@@ -1,7 +1,13 @@
-<app-navbar />
+@if (loading$ | async) {
+  <div class="loading-screen">
+    <app-spinner />
+  </div>
+} @else {
+  <app-navbar />
 
-<main>
-  <app-container>
-    <router-outlet />
-  </app-container>
-</main>
+  <main>
+    <app-container>
+      <router-outlet />
+    </app-container>
+  </main>
+}

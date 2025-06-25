@@ -1,20 +1,13 @@
-import { Body, Controller, Delete, Get, NotFoundException, Param, Post, Put, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, NotFoundException, Param, Put, UseGuards } from '@nestjs/common';
 import { UsersService } from "./users.service";
-import { AdminUserDto, CreateUserDto, FindOneUserParams, UpdateUserDto } from "./user.dto";
+import { AdminUserDto, FindOneUserParams, UpdateUserDto } from "./user.dto";
 import { User } from "./user.entity";
-import { AdminGuard } from "../auth/admin.guard";
+import { ClerkAdminAuthGuard } from "../auth/clerk-admin-auth.guard";
 
 @Controller('admin/users')
-@UseGuards(AdminGuard)
+@UseGuards(ClerkAdminAuthGuard)
 export class AdminUsersController {
   constructor(private readonly usersService: UsersService) {}
-
-  @Post('/')
-  public async createUser(
-    @Body() data: CreateUserDto,
-  ): Promise<User> {
-    return this.usersService.create(data);
-  }
 
   @Get('/')
   public async getAllUsers(): Promise<{ items: AdminUserDto[] }> {

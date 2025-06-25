@@ -1,27 +1,39 @@
-import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
+import { ActivatedRouteSnapshot, CanActivate, RouterStateSnapshot } from '@angular/router';
 import { inject, Injectable } from '@angular/core';
 import { AuthService } from './auth.service';
-import { Observable } from 'rxjs';
+import { filter, firstValueFrom, take } from 'rxjs';
+import { SpinnerService } from '../shared/spinner/spinner.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthGuard implements CanActivate {
   #authService = inject(AuthService);
-  #router = inject(Router);
+  #spinner = inject(SpinnerService);
 
-  canActivate(
+
+  async canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot,
-  ):
-    | Observable<boolean | UrlTree>
-    | Promise<boolean | UrlTree>
-    | boolean
-    | UrlTree {
-    if (this.#authService.isLoggedIn()) {
+  ): Promise<boolean> {
+    console.info('[AuthGuard] Waiting for AuthService to init.');
+    this.#spinner.show();
+
+    await firstValueFrom(
+      this.#authService.isLoading$.pipe(
+        filter(loading => !loading),
+        take(1)
+      )
+    );
+
+    if (this.#authService.loadedCurrentUser()) {
+      console.info('[AuthGuard] User is authenticated, access granted.');
+      this.#spinner.hide();
       return true;
     }
-    this.#router.navigate(['login']);
+
+    console.info('[AuthGuard] User not found. Redirecting to login.');
+    this.#authService.redirectToLogin();
     return false;
   }
 }

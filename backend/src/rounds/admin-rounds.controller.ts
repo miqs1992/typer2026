@@ -2,9 +2,9 @@ import { Body, Controller, Delete, Get, NotFoundException, Param, Post, Put, Use
 import { CreateRoundDto, FindOneRoundParams } from "./rounds.dto";
 import { Round } from "./round.entity";
 import { RoundsService } from "./rounds.service";
-import { AdminGuard } from "../auth/admin.guard";
+import { ClerkAdminAuthGuard } from "../auth/clerk-admin-auth.guard";
 
-@UseGuards(AdminGuard)
+@UseGuards(ClerkAdminAuthGuard)
 @Controller('admin/rounds')
 export class AdminRoundsController {
   constructor(private readonly roundsService: RoundsService) {}

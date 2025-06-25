@@ -4,7 +4,7 @@ import { MatButton, MatIconButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { Container } from '../container/container';
 import { NgOptimizedImage } from '@angular/common';
-import { Router, RouterLink } from '@angular/router';
+import { RouterLink } from '@angular/router';
 import { AuthService } from '../../auth/auth.service';
 import { MatMenu, MatMenuItem, MatMenuTrigger } from '@angular/material/menu';
 
@@ -16,12 +16,13 @@ import { MatMenu, MatMenuItem, MatMenuTrigger } from '@angular/material/menu';
 })
 export class Navbar {
   #authService = inject(AuthService);
-  #router = inject(Router);
-  isLoggedIn = this.#authService.isLoggedIn;
-  currentUser = this.#authService.loadedCurrentUser
+  currentUser = this.#authService.loadedCurrentUser;
 
   onLogout() {
     this.#authService.logout();
-    this.#router.navigate(['login'], { replaceUrl: true });
+  }
+
+  login() {
+    this.#authService.redirectToLogin();
   }
 }

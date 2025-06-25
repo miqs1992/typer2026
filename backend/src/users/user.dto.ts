@@ -1,5 +1,5 @@
-import { IsBoolean, IsEmail, IsNotEmpty, IsOptional, IsString, IsUUID, Length } from "class-validator";
-import { PartialType, OmitType } from '@nestjs/mapped-types';
+import { IsBoolean, IsEmail, IsNotEmpty, IsOptional, IsString, IsUUID } from "class-validator";
+import { OmitType, PartialType } from '@nestjs/mapped-types';
 import { User } from "./user.entity";
 import { PublicPlayerDto, PublicTeamDto } from "../teams/teams.dto";
 
@@ -8,12 +8,7 @@ export class CreateUserDto {
   email: string;
 
   @IsString()
-  @Length(8)
-  password: string;
-
-  @IsString()
-  @Length(8)
-  passwordConfirmation: string;
+  clerkId: string;
 
   @IsString()
   @IsNotEmpty()
@@ -25,23 +20,13 @@ export class CreateUserDto {
 }
 
 export class UpdateUserDto extends PartialType(
-  OmitType(CreateUserDto, ['password', 'passwordConfirmation'] as const)
+  OmitType(CreateUserDto, ['clerkId'] as const)
 ) {
   @IsBoolean()
   isAdmin: boolean;
 
   @IsBoolean()
   hasPaid: boolean;
-
-  @IsString()
-  @IsOptional()
-  @Length(8)
-  password?: string;
-
-  @IsString()
-  @IsOptional()
-  @Length(8)
-  passwordConfirmation?: string;
 }
 
 export interface AdminUserDto {
@@ -68,16 +53,6 @@ export type RankingUserDto = Pick<User, 'id' | 'points' | 'exactBetCount' | 'lea
 };
 
 export class UpdateMeDto {
-  @IsString()
-  @IsOptional()
-  @Length(8)
-  password?: string;
-
-  @IsString()
-  @IsOptional()
-  @Length(8)
-  passwordConfirmation?: string;
-
   @IsUUID()
   @IsOptional()
   winnerId?: string;

@@ -1,7 +1,6 @@
 import { Routes } from '@angular/router';
 import { Home } from './pages/home/home';
 import { Rounds } from './pages/rounds/rounds';
-import { Login } from './pages/auth/login/login';
 import { AuthGuard } from './auth/auth.guard';
 import { Ranking } from './pages/ranking/ranking';
 import { CurrentUserResolver } from './auth/auth.resolver';
@@ -22,6 +21,5 @@ export const routes: Routes = [
     },
     title: 'Euro Typer 2026',
   },
-  { path: 'login', component: Login },
 ];
 

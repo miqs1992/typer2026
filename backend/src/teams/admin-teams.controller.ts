@@ -2,9 +2,9 @@ import { Body, Controller, Delete, Get, NotFoundException, Param, Post, Put, Use
 import { CreateTeamDto, FindOneTeamParams, UpdateTeamDto } from "./teams.dto";
 import { Team } from "./team.entity";
 import { TeamsService } from "./teams.service";
-import { AdminGuard } from "../auth/admin.guard";
+import { ClerkAdminAuthGuard } from "../auth/clerk-admin-auth.guard";
 
-@UseGuards(AdminGuard)
+@UseGuards(ClerkAdminAuthGuard)
 @Controller('admin/teams')
 export class AdminTeamsController {
   constructor(private readonly teamsService: TeamsService) {}

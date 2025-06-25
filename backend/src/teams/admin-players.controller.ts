@@ -1,12 +1,12 @@
 import { Body, Controller, Delete, Get, NotFoundException, Param, Post, Put, UseGuards } from "@nestjs/common";
-import { AdminGuard } from "../auth/admin.guard";
+import { ClerkAdminAuthGuard } from "../auth/clerk-admin-auth.guard";
 import { PlayersService } from "./players.service";
 import { CreatePlayerDto, FindOnePlayerParams, FindOneTeamParams, UpdatePlayerDto } from "./teams.dto";
 import { Team } from "./team.entity";
 import { TeamsService } from "./teams.service";
 import { Player } from "./player.entity";
 
-@UseGuards(AdminGuard)
+@UseGuards(ClerkAdminAuthGuard)
 @Controller('admin/teams/:teamId/players')
 export class AdminPlayersController {
   constructor(
@@ -79,4 +79,3 @@ export class AdminPlayersController {
     return player;
   }
 }
-
