@@ -3,7 +3,7 @@ services:
     name: backend
     runtime: node
     repo: https://github.com/miqs1992/typer2026
-    plan: starter
+    plan: free
     buildCommand: cd backend && npm install && npm run build
     startCommand: cd backend && npm run start:prod
     envVars:
