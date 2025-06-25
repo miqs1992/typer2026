@@ -3,7 +3,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule, ConfigService } from "@nestjs/config";
 import { JwtModule } from "@nestjs/jwt";
-import { TypeOrmModule } from "@nestjs/typeorm";
+import { TypeOrmModule, TypeOrmModuleOptions } from "@nestjs/typeorm";
 import { UsersModule } from './users/users.module';
 import { User } from "./users/user.entity";
 import { AuthModule } from './auth/auth.module';
@@ -33,17 +33,35 @@ import { ClerkClientProvider } from "./providers/clerk-client.provider";
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
-      useFactory: async (configService: ConfigService) => ({
-        type: 'postgres',
-        host: configService.get<string>('DB_HOST'),
-        port: Number(configService.get<string>('DB_PORT')),
-        username: configService.get<string>('DB_USER'),
-        password: configService.get<string>('DB_PASSWORD'),
-        database: configService.get<string>('DB_NAME'),
-        entities: [User, Round, MatchDay, Team, Match, Player],
-        synchronize: true,
-        namingStrategy: new SnakeNamingStrategy(),
-      }),
+      useFactory: async (configService: ConfigService) => {
+        const config: TypeOrmModuleOptions = {
+          type: 'postgres',
+          entities: [User, Round, MatchDay, Team, Match, Player],
+          synchronize: true,
+          namingStrategy: new SnakeNamingStrategy(),
+        }
+
+        if (configService.get<string>('DATABASE_URL')) {
+          return {
+            ...config,
+            url: configService.get<string>('DATABASE_URL'),
+            ssl: {
+              rejectUnauthorized: false,
+            },
+          };
+        } else {
+          return {
+            ...config,
+            host: configService.get<string>('DB_HOST'),
+            port: Number(configService.get<string>('DB_PORT')),
+            username: configService.get<string>('DB_USER'),
+            password: configService.get<string>('DB_PASSWORD'),
+            database: configService.get<string>('DB_NAME'),
+          }
+        }
+
+
+      },
 
     }),
     UsersModule,
