@@ -7,6 +7,7 @@ export interface Profile {
   points: number;
   leagueRank: number;
   exactBetCount: number;
+  hasPaid: boolean;
   winner: { name: string; id: string; flag: string } | null;
   topScorer: {
     name: string;

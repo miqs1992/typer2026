@@ -14,7 +14,7 @@ import {
   MatTable
 } from '@angular/material/table';
 import { MatIcon } from '@angular/material/icon';
-import { MatFabButton, MatIconButton } from '@angular/material/button';
+import { MatIconButton } from '@angular/material/button';
 import { RouterLink } from '@angular/router';
 
 @Component({
@@ -34,7 +34,6 @@ import { RouterLink } from '@angular/router';
     MatIcon,
     MatIconButton,
     RouterLink,
-    MatFabButton,
   ],
   templateUrl: './users.html',
   styleUrl: './users.scss'

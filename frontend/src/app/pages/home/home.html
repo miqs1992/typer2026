@@ -1,4 +1,13 @@
-@if (showAlert()) {
+@if (showPaymentAlert()) {
+  <app-alert
+    [showIcon]="true"
+    type="error"
+  >
+    You have not yet paid your entry fee! Contact the admin to pay.
+  </app-alert>
+}
+
+@if (showSelectionAlert()) {
   <app-alert
     [showIcon]="true"
     type="warning"

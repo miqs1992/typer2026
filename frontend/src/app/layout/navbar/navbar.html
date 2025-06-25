@@ -7,10 +7,13 @@
       <a matIconButton routerLink="/">
         <mat-icon>home</mat-icon>
       </a>
-      <a matIconButton routerLink="/profile">
-        <mat-icon>person</mat-icon>
-      </a>
-      <a matButton routerLink="/ranking">Ranking</a>
+      @if(isBeforeFirstGame()) {
+        <a matIconButton routerLink="/profile">
+          <mat-icon>person</mat-icon>
+        </a>
+      } @else {
+        <a matButton routerLink="/ranking">Ranking</a>
+      }
       <a matButton routerLink="/rounds">Rounds</a>
       @if(user.isAdmin) {
         <button matButton [matMenuTriggerFor]="admin">Admin</button>

@@ -4,9 +4,8 @@ import { UsersAdminService } from '../users-admin.service';
 import { UpdateUserData, User } from '../users.model';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { equalValues } from '../../../../helpers/equal-values.validator';
 import { MatCheckbox } from '@angular/material/checkbox';
-import { MatFormField, MatHint, MatInput } from '@angular/material/input';
+import { MatFormField, MatInput } from '@angular/material/input';
 import { AdminFormWrapperComponent } from '../../../../shared/admin-form-wrapper/admin-form-wrapper.component';
 
 @Component({
@@ -17,7 +16,6 @@ import { AdminFormWrapperComponent } from '../../../../shared/admin-form-wrapper
     MatFormField,
     MatInput,
     ReactiveFormsModule,
-    MatHint,
     AdminFormWrapperComponent
   ],
   templateUrl: './edit-user.html',
@@ -43,14 +41,6 @@ export class EditUser implements OnInit {
     }),
     isAdmin: new FormControl(false),
     hasPaid: new FormControl(false),
-    passwords: new FormGroup({
-      password: new FormControl('', {
-        validators: [Validators.minLength(8)],
-      }),
-      passwordConfirmation: new FormControl('', {
-        validators: [Validators.minLength(8)],
-      }),
-    }, { validators: equalValues('password', 'passwordConfirmation') }),
   });
 
   ngOnInit() {
@@ -63,10 +53,6 @@ export class EditUser implements OnInit {
           lastName: user.lastName,
           isAdmin: user.isAdmin,
           hasPaid: user.hasPaid,
-          passwords: {
-            password: '',
-            passwordConfirmation: ''
-          }
         })
       },
       error: (err) => {
@@ -87,11 +73,6 @@ export class EditUser implements OnInit {
       lastName: this.form.value.lastName!,
       isAdmin: this.form.value.isAdmin!,
       hasPaid: this.form.value.hasPaid!,
-    }
-
-    if (this.form.value.passwords!.password) {
-      updateData.password = this.form.value.passwords!.password!;
-      updateData.passwordConfirmation = this.form.value.passwords!.passwordConfirmation!;
     }
 
     const sub = this.#usersService.updateResource(this.userId(), updateData).subscribe({

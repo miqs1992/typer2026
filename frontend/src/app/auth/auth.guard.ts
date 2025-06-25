@@ -16,7 +16,6 @@ export class AuthGuard implements CanActivate {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot,
   ): Promise<boolean> {
-    console.info('[AuthGuard] Waiting for AuthService to init.');
     this.#spinner.show();
 
     await firstValueFrom(
@@ -27,7 +26,6 @@ export class AuthGuard implements CanActivate {
     );
 
     if (this.#authService.loadedCurrentUser()) {
-      console.info('[AuthGuard] User is authenticated, access granted.');
       this.#spinner.hide();
       return true;
     }

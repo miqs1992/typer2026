@@ -7,7 +7,7 @@ import { Card } from './card/card';
 import { DatePipe } from '@angular/common';
 import { TopScorers } from './top-scorers/top-scorers';
 import { Ranking } from '../ranking/ranking';
-import { HomeService } from './home.service';
+import { StopBetTimeService } from '../../shared/stop-bet-time/stop-bet-time.service';
 
 @Component({
   selector: 'app-home',
@@ -25,15 +25,17 @@ import { HomeService } from './home.service';
 })
 export class Home implements OnInit {
   #activatedRoute = inject(ActivatedRoute);
-  #homeService = inject(HomeService);
   #destroyRef = inject(DestroyRef);
+  #stopBetTimeService = inject(StopBetTimeService);
 
-  currentUser = signal<Profile | null>(null);
   stopBetTime = signal<Date | null>(null);
+  currentUser = signal<Profile | null>(null);
 
-  showAlert = computed(() => Boolean(this.currentUser()) && (
+  showSelectionAlert = computed(() => Boolean(this.currentUser()) && (
     this.currentUser()!.topScorer === null || this.currentUser()!.winner === null)
   )
+
+  showPaymentAlert = computed(() => Boolean(this.currentUser()) && !this.currentUser()!.hasPaid);
 
   ngOnInit() {
     const userSub = this.#activatedRoute.data.subscribe(data => {
@@ -44,7 +46,7 @@ export class Home implements OnInit {
       }
     })
 
-    const stopBetTimeSub = this.#homeService.getNextStopBetTime().subscribe(time => {
+    const stopBetTimeSub = this.#stopBetTimeService.getNextStopBetTime().subscribe(time => {
       if (time) {
         this.stopBetTime.set(new Date(time));
       } else {

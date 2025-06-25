@@ -10,17 +10,10 @@ export interface User {
   updatedAt: Date;
 }
 
-export interface CreateUserData {
+export interface UpdateUserData {
   firstName: string;
   lastName: string;
   email: string;
-  password: string;
-  passwordConfirmation: string;
-}
-
-export interface UpdateUserData extends Omit<CreateUserData, 'password' | 'passwordConfirmation'> {
   isAdmin: boolean;
   hasPaid: boolean;
-  password?: string;
-  passwordConfirmation?: string;
 }

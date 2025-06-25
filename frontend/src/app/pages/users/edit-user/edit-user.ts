@@ -1,11 +1,9 @@
 import { Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
 import { Profile } from '../../../auth/auth.model';
 import { ActivatedRoute } from '@angular/router';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { equalValues } from '../../../helpers/equal-values.validator';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { UsersService } from '../users.service';
 import { AdminFormWrapperComponent } from '../../../shared/admin-form-wrapper/admin-form-wrapper.component';
-import { MatFormField, MatHint, MatInput } from '@angular/material/input';
 import { TeamSelectorComponent } from '../../../shared/teams/team-selector/team-selector.component';
 import { PlayerSelectorComponent } from '../../../shared/teams/player-selector/player-selector.component';
 import { UpdateUserData } from '../users.model';
@@ -14,13 +12,9 @@ import { UpdateUserData } from '../users.model';
   selector: 'app-edit-user',
   imports: [
     AdminFormWrapperComponent,
-    MatFormField,
-    MatInput,
     ReactiveFormsModule,
     TeamSelectorComponent,
-    PlayerSelectorComponent,
-    MatFormField,
-    MatHint
+    PlayerSelectorComponent
   ],
   templateUrl: './edit-user.html',
   styleUrl: './edit-user.scss',
@@ -36,14 +30,6 @@ export class EditUser implements OnInit {
   form = new FormGroup({
     winnerId: new FormControl(''),
     topScorerId: new FormControl(''),
-    passwords: new FormGroup({
-      password: new FormControl('', {
-        validators: [Validators.minLength(8)],
-      }),
-      passwordConfirmation: new FormControl('', {
-        validators: [Validators.minLength(8)],
-      }),
-    }, { validators: equalValues('password', 'passwordConfirmation') }),
   });
 
   ngOnInit() {
@@ -57,32 +43,28 @@ export class EditUser implements OnInit {
       } else {
         this.currentUser.set(null);
       }
-    })
 
-    const isBeforeFirstGameSub = this.#usersService.getIsBeforeFirstGame().subscribe(
-      result => this.isBeforeFirstGame.set(result)
-    )
+      if (data['isBeforeFirstGame'] !== undefined) {
+        this.isBeforeFirstGame.set(data['isBeforeFirstGame']);
+      } else {
+        this.isBeforeFirstGame.set(false);
+      }
+    })
 
     this.#destroyRef.onDestroy(() => {
       userSub.unsubscribe();
-      isBeforeFirstGameSub.unsubscribe();
     })
   }
 
   onSubmit() {
-    if (this.form.invalid) {
+    if (this.form.invalid || !this.isBeforeFirstGame()) {
       console.log('Form is invalid');
       return;
     }
 
     const userData: UpdateUserData = {
-      password: this.form.value.passwords?.password || undefined,
-      passwordConfirmation: this.form.value.passwords?.passwordConfirmation || undefined,
-    }
-
-    if(this.isBeforeFirstGame()) {
-      userData.winnerId = this.form.value.winnerId || undefined;
-      userData.topScorerId = this.form.value.topScorerId || undefined;
+      winnerId: this.form.value.winnerId || undefined,
+      topScorerId: this.form.value.topScorerId || undefined
     }
 
     const sub = this.#usersService.updateProfile(userData).subscribe({

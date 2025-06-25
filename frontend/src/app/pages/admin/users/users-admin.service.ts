@@ -1,11 +1,11 @@
 import { computed, Injectable, signal } from '@angular/core';
-import { CreateUserData, UpdateUserData, User } from './users.model';
+import { UpdateUserData, User } from './users.model';
 import { DataService } from '../data.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class UsersAdminService extends DataService<User, CreateUserData, UpdateUserData> {
+export class UsersAdminService extends DataService<User, {}, UpdateUserData> {
   path = signal('admin/users');
   resourceName = 'user';
 

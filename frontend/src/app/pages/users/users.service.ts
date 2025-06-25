@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { catchError, map } from 'rxjs';
+import { catchError } from 'rxjs';
 import { UpdateUserData } from './users.model';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
@@ -18,16 +18,6 @@ export class UsersService {
         throw error;
       })
     )
-  }
-
-  getIsBeforeFirstGame() {
-    return this.#httpClient.get<{ isBeforeFirstGame: boolean }>('match-days/first').pipe(
-      map((matchDay) => matchDay.isBeforeFirstGame),
-      catchError((error: Error) => {
-        this.#openSnackBar(`Failed to check game status. Please try again.`);
-        throw error;
-      })
-    );
   }
 
   #openSnackBar(message: string): void {

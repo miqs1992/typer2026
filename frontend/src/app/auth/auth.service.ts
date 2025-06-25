@@ -1,6 +1,5 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { Profile } from './auth.model';
-import { currentUserMock } from './auth.mock';
 import { catchError, map, of } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { Clerk } from '@clerk/clerk-js';
@@ -26,7 +25,6 @@ export class AuthService {
 
   private async init() {
     if(!this.#isLoading()) {
-      console.warn('AuthService is already initialized.');
       return;
     }
 
@@ -34,10 +32,8 @@ export class AuthService {
     await instance.load({});
     this.#clerk.set(instance);
     if(instance.session) {
-      console.info('Session found, loading current user.');
       this.loadCurrentUser().subscribe();
     } else {
-      console.warn('No session found, redirecting to login.');
       this.#isLoading.set(false);
     }
   }
@@ -52,7 +48,7 @@ export class AuthService {
   }
 
   public async getToken() {
-    const session = this.#clerk()!.session;
+    const session = this.#clerk()?.session;
     if (!session) {
       return null;
     }
@@ -69,10 +65,9 @@ export class AuthService {
 
     return this.#httpClient.get<Profile>('users/me').pipe(
       map(fetchedUserData => {
-        const fullProfile = { ...currentUserMock, ...fetchedUserData };
-        this.#currentUser.set(fullProfile);
+        this.#currentUser.set(fetchedUserData);
         this.#isLoading.set(false);
-        return fullProfile;
+        return fetchedUserData;
       }),
       catchError((err) => {
         this.logout();

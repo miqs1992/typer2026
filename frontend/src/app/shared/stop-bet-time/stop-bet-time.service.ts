@@ -1,12 +1,12 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { PublicMatchDay } from './home.dto';
 import { map } from 'rxjs';
+import { PublicMatchDay } from './stop-bet-time.dto';
 
 @Injectable({
   providedIn: 'root'
 })
-export class HomeService {
+export class StopBetTimeService {
   #httpClient = inject(HttpClient);
 
   getNextStopBetTime() {
@@ -18,5 +18,11 @@ export class HomeService {
         return day.stopBetTime;
       })
     )
+  }
+
+  getIsBeforeFirstGame() {
+    return this.#httpClient.get<PublicMatchDay & { isBeforeFirstGame: boolean }>('match-days/first').pipe(
+      map((matchDay) => matchDay.isBeforeFirstGame),
+    );
   }
 }
