@@ -2,7 +2,7 @@ import { inject, Injectable, signal } from '@angular/core';
 import { Profile } from './auth.model';
 import { catchError, map, of } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { Clerk } from '@clerk/clerk-js';
+import { Clerk } from "@clerk/clerk-js/headless";
 import { toObservable } from '@angular/core/rxjs-interop';
 import { environment } from '../../environments/environment';
 
