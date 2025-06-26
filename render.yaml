@@ -19,7 +19,7 @@ services:
     runtime: static
     repo: https://github.com/miqs1992/typer2026
     buildCommand: cd frontend && npm install && npm run build
-    staticPublishPath: frontend/dist/frontend
+    staticPublishPath: frontend/dist/eurotyper2026/browser
     routes:
       - type: rewrite
         source: /*
