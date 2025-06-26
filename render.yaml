@@ -4,6 +4,7 @@ services:
     runtime: node
     repo: https://github.com/miqs1992/typer2026
     plan: free
+    region: frankfurt
     buildCommand: cd backend && npm install && npm run build
     startCommand: cd backend && npm run start:prod
     envVars:
@@ -28,3 +29,4 @@ services:
 databases:
   - name: postgres
     plan: free
+    region: frankfurt

@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { map } from 'rxjs';
+import { catchError, map, of } from 'rxjs';
 import { PublicMatchDay } from './stop-bet-time.dto';
 
 @Injectable({
@@ -23,6 +23,10 @@ export class StopBetTimeService {
   getIsBeforeFirstGame() {
     return this.#httpClient.get<PublicMatchDay & { isBeforeFirstGame: boolean }>('match-days/first').pipe(
       map((matchDay) => matchDay.isBeforeFirstGame),
+      catchError(() => {
+        console.warn('[StopBetTimeService] Failed to fetch first match day. Assuming it is before the first game.');
+        return of(true); // Default to true if the request fails
+      })
     );
   }
 }

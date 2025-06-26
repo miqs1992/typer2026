@@ -59,10 +59,7 @@ import { ClerkClientProvider } from "./providers/clerk-client.provider";
             database: configService.get<string>('DB_NAME'),
           }
         }
-
-
       },
-
     }),
     UsersModule,
     AuthModule,
