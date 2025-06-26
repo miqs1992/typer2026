@@ -1,4 +1,4 @@
 export const environment = {
-  apiUrl: 'https://backend-6m2u.onrender.com',
-  clerkPublicKey: 'pk_test_c3VyZS1jYXRmaXNoLTUxLmNsZXJrLmFjY291bnRzLmRldiQ'
+  apiUrl: '__BACKEND_URL__',
+  clerkPublicKey: '__CLERK_PUBLIC_KEY__'
 };

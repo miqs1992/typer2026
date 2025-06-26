@@ -5,8 +5,9 @@ services:
     repo: https://github.com/miqs1992/typer2026
     plan: free
     region: frankfurt
-    buildCommand: cd backend && npm install && npm run build
-    startCommand: cd backend && npm run start:prod
+    rootDir: backend
+    buildCommand: npm install && npm run build
+    startCommand: npm run start:prod
     envVars:
       - key: NODE_VERSION
         value: 22
@@ -19,8 +20,14 @@ services:
     name: frontend
     runtime: static
     repo: https://github.com/miqs1992/typer2026
-    buildCommand: cd frontend && npm install && npm run build
-    staticPublishPath: frontend/dist/eurotyper2026/browser
+    autoDeployTrigger: commit
+    rootDir: frontend
+    buildCommand: >
+      sed -i "s|__BACKEND_URL__|$BACKEND_URL|g" src/environments/environment.ts &&
+      sed -i "s|__CLERK_PUBLIC_KEY__|$CLERK_PUBLIC_KEY|g" src/environments/environment.ts &&
+      npm install && 
+      npm run build
+    staticPublishPath: dist/eurotyper2026/browser
     routes:
       - type: rewrite
         source: /*
