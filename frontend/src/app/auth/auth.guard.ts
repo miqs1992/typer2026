@@ -11,7 +11,6 @@ export class AuthGuard implements CanActivate {
   #authService = inject(AuthService);
   #spinner = inject(SpinnerService);
 
-
   async canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot,

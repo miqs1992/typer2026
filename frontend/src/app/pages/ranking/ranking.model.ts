@@ -16,7 +16,7 @@ export interface ShortRankedUserData {
 }
 
 export interface RankedUserData extends ShortRankedUserData {
-  winner: TeamData;
+  winner: TeamData | null;
   leagueRank: number;
-  topScorer: TopScorerData;
+  topScorer: TopScorerData | null;
 }

@@ -15,7 +15,3 @@ export interface Profile {
     team: { name: string; flag: string };
   } | null;
 }
-
-export interface SignInResponse {
-  access_token: string;
-}
