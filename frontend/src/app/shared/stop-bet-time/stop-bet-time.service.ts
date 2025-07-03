@@ -15,7 +15,7 @@ export class StopBetTimeService {
         if (!day) {
           return null;
         }
-        return day.stopBetTime;
+        return new Date(day.stopBetTime);
       })
     )
   }

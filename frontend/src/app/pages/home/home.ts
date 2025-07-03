@@ -48,7 +48,7 @@ export class Home implements OnInit {
 
     const stopBetTimeSub = this.#stopBetTimeService.getNextStopBetTime().subscribe(time => {
       if (time) {
-        this.stopBetTime.set(new Date(time));
+        this.stopBetTime.set(time);
       } else {
         this.stopBetTime.set(null);
       }

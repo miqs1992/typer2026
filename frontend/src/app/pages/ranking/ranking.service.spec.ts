@@ -4,7 +4,7 @@ import { HttpTestingController, provideHttpClientTesting, } from '@angular/commo
 import { provideHttpClient } from '@angular/common/http';
 import { mockRanking } from './ranking.mock';
 
-describe('Ranking Service', () => {
+describe('[Service] Ranking Service', () => {
   let service: RankingService;
   let httpTestingController: HttpTestingController;
 

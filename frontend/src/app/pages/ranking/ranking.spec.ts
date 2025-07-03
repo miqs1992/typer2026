@@ -8,7 +8,7 @@ import { currentUserMock } from '../../auth/auth.mock';
 import { RankedUserData } from './ranking.model';
 
 
-describe('Ranking', () => {
+describe('[Component] Ranking', () => {
   let component: Ranking;
   let fixture: ComponentFixture<Ranking>;
 
