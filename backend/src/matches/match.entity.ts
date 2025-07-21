@@ -1,7 +1,8 @@
-import { Column, CreateDateColumn, Entity, ManyToOne, Unique, BeforeInsert, BeforeUpdate } from "typeorm";
+import { Column, CreateDateColumn, Entity, ManyToOne, Unique, BeforeInsert, BeforeUpdate, OneToMany } from "typeorm";
 import { MatchDay } from "../match-days/match-day.entity";
 import { Team } from "../teams/team.entity";
 import { BaseResource } from "../shared/database/base-resource.entity";
+import { Bet } from "../betting/bet.entity";
 
 @Entity({ name: 'matches' })
 @Unique(["firstTeam", "secondTeam", "matchDay"])
@@ -26,6 +27,9 @@ export class Match extends BaseResource {
     { eager: true, nullable: false }
   )
   secondTeam: Team;
+
+  @OneToMany(() => Bet, (bet) => bet.match)
+  bets: Bet[];
 
   @Column({ type: 'int', default: 0 })
   firstTeamResult: number;

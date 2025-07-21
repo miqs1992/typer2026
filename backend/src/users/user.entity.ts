@@ -1,7 +1,8 @@
-import { Column, Entity, ManyToOne } from 'typeorm';
+import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
 import { Team } from "../teams/team.entity";
 import { Player } from "../teams/player.entity";
 import { BaseResource } from "../shared/database/base-resource.entity";
+import { Bet } from "../betting/bet.entity";
 
 @Entity({ name: 'users' })
 export class User extends BaseResource {
@@ -23,7 +24,7 @@ export class User extends BaseResource {
   @Column({ default: false })
   hasPaid: boolean;
 
-  @Column({ type: 'int', default: 0 })
+  @Column({ type: 'float', default: 0 })
   points: number;
 
   @Column({ type: 'int', default: 0 })
@@ -45,4 +46,7 @@ export class User extends BaseResource {
     { eager: true, nullable: true }
   )
   topScorer: Player;
+
+  @OneToMany(() => Bet, (bet) => bet.user)
+  bets: Bet[];
 }

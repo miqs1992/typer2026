@@ -8,6 +8,8 @@ import { DatePipe } from '@angular/common';
 import { TopScorers } from './top-scorers/top-scorers';
 import { Ranking } from '../ranking/ranking';
 import { StopBetTimeService } from '../../shared/stop-bet-time/stop-bet-time.service';
+import { NextDay } from './betting/next-day/next-day';
+import { PreviousDay } from './betting/previous-day/previous-day';
 
 @Component({
   selector: 'app-home',
@@ -19,6 +21,8 @@ import { StopBetTimeService } from '../../shared/stop-bet-time/stop-bet-time.ser
     DatePipe,
     TopScorers,
     Ranking,
+    NextDay,
+    PreviousDay,
   ],
   templateUrl: './home.html',
   styleUrl: './home.scss'

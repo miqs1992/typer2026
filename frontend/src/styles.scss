@@ -29,3 +29,8 @@ html {
   padding-top: 8px;
 }
 
+.snackbar-success {
+  .mat-mdc-snackbar-surface {
+    background-color: #5a9e5a !important;
+  }
+}

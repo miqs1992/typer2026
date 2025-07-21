@@ -1,22 +1,23 @@
-import { Injectable, Logger, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from "@nestjs/typeorm";
-import { FindOptionsWhere, Repository } from "typeorm";
+import { FindOptionsOrder, FindOptionsWhere, Repository } from "typeorm";
 import { Match } from "./match.entity";
 import { CreateMatchDto, UpdateMatchDto } from "./matches.dto";
 
 @Injectable()
 export class MatchesService {
-  private readonly logger = new Logger(MatchesService.name);
-
   constructor(
     @InjectRepository(Match)
     private matchesRepository: Repository<Match>,
   ) {}
 
-  findAll(whereClause?: FindOptionsWhere<Match>): Promise<Match[]> {
+  findAll(
+    whereClause?: FindOptionsWhere<Match>,
+    order: FindOptionsOrder<Match> = { startsAt: 'DESC' }
+  ): Promise<Match[]> {
     return this.matchesRepository.find({
       where: whereClause,
-      order: { startsAt: 'DESC' }
+      order
     });
   }
 
@@ -45,7 +46,6 @@ export class MatchesService {
       throw new NotFoundException('Match not found');
     }
 
-    // Create updated match object with relation references
     const updatedMatch = this.matchesRepository.create({
       ...match,
       firstTeamResult: matchData.firstTeamResult,
@@ -53,16 +53,6 @@ export class MatchesService {
       startsAt: matchData.startsAt,
       firstTeam: { id: matchData.firstTeamId },
       secondTeam: { id: matchData.secondTeamId },
-    });
-
-    // Log the final update object
-    this.logger.log('Updated match object:', {
-      id: updatedMatch.id,
-      firstTeamId: updatedMatch.firstTeam?.id,
-      secondTeamId: updatedMatch.secondTeam?.id,
-      firstTeamResult: updatedMatch.firstTeamResult,
-      secondTeamResult: updatedMatch.secondTeamResult,
-      startsAt: updatedMatch.startsAt
     });
 
     return this.matchesRepository.save(updatedMatch);

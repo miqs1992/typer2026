@@ -1,0 +1,52 @@
+@if (isFetching()) {
+  <mat-spinner></mat-spinner>
+} @else {
+  @if (matchDay(); as matchDay) {
+    <h3>Previous Match Day - {{ matchDay.dayNumber }}</h3>
+    <table mat-table [dataSource]="bets()" class="mat-elevation-z8">
+      <ng-container matColumnDef="match">
+        <th mat-header-cell *matHeaderCellDef> Matches </th>
+        <td mat-cell *matCellDef="let element">
+          <app-team-label [team]="element.match.firstTeam" />
+          -
+          <app-team-label [team]="element.match.secondTeam" />
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="score">
+        <th mat-header-cell *matHeaderCellDef> Scores </th>
+        <td mat-cell *matCellDef="let element">
+          {{element.match.firstTeamResult}}
+          -
+          {{element.match.secondTeamResult}}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="bet">
+        <th mat-header-cell *matHeaderCellDef> Bets </th>
+        <td mat-cell *matCellDef="let element">
+          {{element.firstTeamResult}}
+          -
+          {{element.secondTeamResult}}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="points">
+        <th mat-header-cell *matHeaderCellDef> Points </th>
+        <td mat-cell *matCellDef="let element">
+          @if (element.isExact) {
+            <b>{{element.points}}</b>
+          } @else {
+            {{element.points}}
+          }
+
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+  } @else {
+    <app-no-match-day title="No previous Match Day"/>
+  }
+}

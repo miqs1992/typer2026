@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from "@nestjs/typeorm";
-import { FindOptionsWhere, MoreThan, Repository } from "typeorm";
+import { FindOptionsWhere, LessThan, MoreThan, Repository } from "typeorm";
 import { MatchDay } from "./match-day.entity";
 import { CreateMatchDayDto } from "./match-days.dto";
 
@@ -25,22 +25,24 @@ export class MatchDaysService {
   async findNextMatchDay(): Promise<MatchDay | null> {
     const now = new Date();
 
-    // Find match day with the closest stopBetTime in the future
     return this.matchDaysRepository.findOne({
-      where: {
-        stopBetTime: MoreThan(now)
-      },
-      order: {
-        stopBetTime: 'ASC' // Get the closest upcoming match day
-      }, // Include all match data
+      where: { stopBetTime: MoreThan(now) },
+      order: { stopBetTime: 'ASC' },
+    });
+  }
+
+  async findPreviousMatchDay(): Promise<MatchDay | null> {
+    const now = new Date();
+
+    return this.matchDaysRepository.findOne({
+      where: { stopBetTime: LessThan(now) },
+      order: { stopBetTime: 'DESC' },
     });
   }
 
   async findFirstMatchDay(): Promise<MatchDay | null> {
     const result = await this.matchDaysRepository.find({
-      order: {
-        stopBetTime: 'ASC'
-      },
+      order: { stopBetTime: 'ASC' },
       take: 1,
     })
 
